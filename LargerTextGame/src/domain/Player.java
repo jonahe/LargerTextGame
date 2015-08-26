@@ -27,6 +27,10 @@ public class Player implements Damageble {
 	public Weapon getWeapon() {
 		return weapon;
 	}
+	
+	public int getHealth() {
+		return health;
+	}
 
 	@Override
 	public void updateHealth(int damage) {
