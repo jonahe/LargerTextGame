@@ -24,6 +24,7 @@ public class App {
 		initializeGame();
 		
 		//TODO: Remove soon
+		// edit from github, just to try it. 
 		
 //		boolean test = true;
 //		
