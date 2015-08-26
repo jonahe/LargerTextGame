@@ -24,11 +24,13 @@ public class App {
 		initializeGame();
 		
 		//TODO: Remove soon
-		boolean test = true;
-		while(test){
-			sanitizeInputToInt(reader);
-		}
 		
+//		boolean test = true;
+//		
+//		while(test){
+//			sanitizeInputToInt(reader);
+//		}
+//		
 		setupPlayer();
 		
 		// Welcome to the game.
