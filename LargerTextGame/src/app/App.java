@@ -26,7 +26,7 @@ public class App {
 	private static final int WEST = 3;
 	private static final int EAST = 4;
 	
-	// maps to choose from
+	// maps to choose from  --  add new levels here
 	private static List<GameMap> mapList = 
 			new ArrayList<GameMap>(Arrays.asList(	new GameMapLevel01(), 
 													new GameMapLevel02()
@@ -41,17 +41,15 @@ public class App {
 		System.out.println();
 		
 		setupPlayer();
-//		
-//		// Welcome to the game.
-//		System.out.printf(	"Hello %s! Good pick, %s is a nice weapon of choice. Let's begin the adventure!", 
-//							player.getName(),
-//							player.getWeapon());
+		chooseMap();
+		
+		// Welcome to the game.
+		System.out.printf(	"Hello %s! Good pick, %s is a nice weapon of choice. Let's begin the adventure!", 
+							player.getName(),
+							player.getWeapon());
 		
 		// start game loop
-		chooseMap();
 		gameLoop();
-		
-		
 		
 		
 		
@@ -100,8 +98,6 @@ public class App {
 		else if (handicap == normal) handicap = 0;
 		else if (handicap == hard) handicap = -10;
 
-		
-		//TODO: think about how to solve the initial position of player in map. random position that doesn't end up in a occupied point?
 		// create player using user input
 		player = new Player(name, weapon, handicap);
 			
@@ -230,25 +226,23 @@ public class App {
 	
 	
 	private static void movePlayer(int direction){
+		// move the player
+		player.move(direction);
 		
 		if(direction == NORTH){
 			System.out.println("You walked north..");
-			player.translatePlayerPosition(0, -1);
 			System.out.println(player.getPosition().toString());
 		
 		} else if(direction == SOUTH){
 			System.out.println("You walked south..");
-			player.translatePlayerPosition(0, 1);
 			System.out.println(player.getPosition().toString());
 		
 		} else if(direction == WEST){
 			System.out.println("You walked west..");
-			player.translatePlayerPosition(-1, 0);
 			System.out.println(player.getPosition().toString());
 		
 		} else if(direction == EAST){
 			System.out.println("You walked east..");
-			player.translatePlayerPosition(1, 0);
 			System.out.println(player.getPosition().toString());
 		}
 	}

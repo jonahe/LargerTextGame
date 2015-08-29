@@ -19,7 +19,7 @@ public abstract class GameMap {
 	private int MAX_X_POSITION;
 	private int MAX_Y_POSITION;
 	// map "inhabitants"
-	private List<Point> occupiedPoints; // spaces occupied by buildings, rocks etc. 
+	private List<Point> occupiedPoints; // spaces "occupied" by forrests, buildings, rocks etc.
 	
 	
 	GameMap(String name, int mapDimensionX, int mapDimensionY, List<Point> occupiedPoints){
@@ -49,6 +49,7 @@ public abstract class GameMap {
 		return MAX_Y_POSITION;
 	}
 	
+
 	public boolean mapPositionOccupied(int xPos, int yPos){
 		Point point = new Point(xPos, yPos);
 		return occupiedPoints.contains(point);
