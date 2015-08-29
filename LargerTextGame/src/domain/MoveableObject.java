@@ -2,16 +2,16 @@ package domain;
 
 import java.awt.Point;
 
-public abstract class MoveableObject {
+public class MoveableObject {
 	
 	private Point position;
 	private int speed;
 	
 	// just for easier reading of code
-	private static final int NORTH = 1;
-	private static final int SOUTH = 2;
-	private static final int WEST = 3;
-	private static final int EAST = 4;
+	protected static final int NORTH = 1;
+	protected static final int SOUTH = 2;
+	protected static final int WEST = 3;
+	protected static final int EAST = 4;
 	
 	public MoveableObject(Point startPosition, int speedOfmovement) {
 		this.position = startPosition;
@@ -45,7 +45,6 @@ public abstract class MoveableObject {
 	public void translatePlayerPosition(int dx, int dy){
 		position.translate(dx, dy);
 	}
-	
 	
 	
 	
