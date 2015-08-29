@@ -6,7 +6,7 @@ import java.util.List;
 import domain.Player;
 
 /*
- * Basic of map , like forests, buildings, hill
+ * Basic "inhabitants" of a map , like forests, buildings, hill
  * 
  */
 public abstract class OccupiedArea {
@@ -46,4 +46,23 @@ public abstract class OccupiedArea {
 		}
 		return near;
 	}
+	
+	public void showOnNearMessage(){
+		System.out.println(messageOnNear);
+	}
+	
+	/**
+	 * Shifts the positions points of the occupied area (through translate).
+	 * 
+	 * @param dx position change on the x-axis
+	 * @param dy position change on the y-axis
+	 */
+	
+	public void shiftOccupiedPoints(int dx, int dy){
+		for(Point point : occupiedPoints){
+			point.translate(dx, dy);
+		}
+	}
+	
+	
 }

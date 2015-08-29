@@ -19,7 +19,8 @@ public abstract class GameMap {
 	private int MAX_X_POSITION;
 	private int MAX_Y_POSITION;
 	// map "inhabitants"
-	private List<Point> occupiedPoints; // spaces "occupied" by forrests, buildings, rocks etc.
+	//TODO: change to List<List<Point>> because we could have several "inhabitants"
+	private List<Point> occupiedPoints; // spaces "occupied" by forests, buildings, rocks etc.
 	
 	
 	GameMap(String name, int mapDimensionX, int mapDimensionY, List<Point> occupiedPoints){

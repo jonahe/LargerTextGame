@@ -44,7 +44,7 @@ public class App {
 		chooseMap();
 		
 		// Welcome to the game.
-		System.out.printf(	"Hello %s! Good pick, %s is a nice weapon of choice. Let's begin the adventure!", 
+		System.out.printf(	"Hello %s! Good pick, %s is a nice weapon of choice. Let's begin the adventure!\n", 
 							player.getName(),
 							player.getWeapon());
 		
