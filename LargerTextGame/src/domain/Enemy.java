@@ -6,11 +6,13 @@ public enum Enemy implements Damageble {
 			200, 
 			"Muhahaha, fear the mighty Wizard! Feel my magic wrath!", 
 			"Oh, please. Don't kill me. I'm just an old weak man!"),
+	
 	TROLL(	2,
 			150, 
 			"AaAhhahah, me be a trooll. You be scared! Ahhaha!",
 			"Ow, ow, ow.. My poor body hurts! Please stop?"
 			),
+	
 	BIRD(	3,
 			30,
 			"Beep beeep. Beeeeeeeeeep. Annoying, right? Haha!", 
@@ -37,6 +39,10 @@ public enum Enemy implements Damageble {
 		return health;
 	}
 	
+	public int getId(){
+		return id;
+	}
+	
 	@Override
 	public void updateHealth(int damage) {
 		health -= damage;
@@ -58,6 +64,7 @@ public enum Enemy implements Damageble {
 			
 		}
 	}
+	
 	
 	public void showAppearanceText() {
 		System.out.println(appearanceText);
