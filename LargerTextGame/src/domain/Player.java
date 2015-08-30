@@ -11,7 +11,7 @@ import helper.GameHelperClass;
  * Basic player.
  */
 
-public class Player extends MoveableObject implements Damageble {
+public class Player extends MovableObject implements Damageble {
 	
 	private String name;
 	private Weapon weapon;
@@ -33,6 +33,7 @@ public class Player extends MoveableObject implements Damageble {
 	}
 	
 	public void useWeapon(EnemyBaseClass enemy) {
+		weapon.makeSound();
 		enemy.updateHealth(weapon.getDamage());
 	}
 	

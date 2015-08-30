@@ -6,7 +6,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
+import battle.Battle;
+import domain.EnemyBaseClass;
 import domain.Player;
 import domain.Weapon;
 import maps.GameMap;
@@ -27,6 +30,8 @@ public class App {
 	private static final int WEST = 3;
 	private static final int EAST = 4;
 	
+	private static final String QUIT_REQUEST = "q";
+	
 	// maps to choose from  --  add new levels here
 	private static List<GameMap> mapList = 
 			new ArrayList<GameMap>(Arrays.asList(	new GameMapLevel01(), 
@@ -38,9 +43,9 @@ public class App {
 		
 		initializeGame();
 		
+		System.out.println("Welcome to the game!");
 		
-		System.out.println();
-		
+		// setup
 		setupPlayer();
 		chooseMap();
 		
@@ -48,6 +53,8 @@ public class App {
 		System.out.printf(	"Hello %s! Good pick, %s is a nice weapon of choice. Let's begin the adventure!\n", 
 							player.getName(),
 							player.getWeapon());
+		String info = "\nRemember: to QUIT, just write \"q\" as input and press enter.";
+		System.out.println(info);
 		
 		// start game loop
 		gameLoop();
@@ -63,7 +70,7 @@ public class App {
 			
 	
 	private static void setupPlayer() {
-		System.out.print("Hi and welcome to the game. Please enter your name: ");
+		System.out.print("Please enter your name: ");
 		String name;
 		int weaponId;
 		
@@ -130,18 +137,25 @@ public class App {
 		exploreWorld();
 		
 		
-		
 	}
 	
 	private static void initializeGame() {
 		// setup scanners
 		scanner = new Scanner(System.in);
-		
+		scanner.useDelimiter(Pattern.compile("[\\r\\n]+")); // next item separated by return or newline
 		
 	}
 	
+	/**
+	 * Prints a message asking for (int) user input, until a valid input is given. Also checks if user wants to quit.
+	 * 
+	 * @param askMessage Message asking for input.
+	 * @param validRangeStart Lowest accepted int - usually 1
+	 * @param validRangeEnd Highest accepted int
+	 * @return The valid input. OR if input is "quit", asks for confirmation and then quits program
+	 */
 	
-	private static int askForAndGetNextInt(String askMessage, int validRangeStart, int validRangeEnd){
+	public static int askForAndGetNextInt(String askMessage, int validRangeStart, int validRangeEnd){
 		// keep asking for an int until there is one
 		while(true){
 			// show the message
@@ -156,9 +170,22 @@ public class App {
 					System.out.println("That number is NOT one of the options! Try again..");
 					continue;
 				}
-			} else {
-				// skip the input that wasn't an int, then repeat the check
-				scanner.next();
+			} else {  // it can be read as a string
+				
+				// check if user wanted to quit
+				//TODO: figure out why scanner.next() work better than scanner.nextLine();
+				
+				String input = scanner.next(); // this also skips the input that wasn't an int
+				System.out.println(input);
+				if(input.equalsIgnoreCase(QUIT_REQUEST)){
+					System.out.print("Are you sure you want to quit? Y / N : ");
+					String confirmation = scanner.next();
+					if(confirmation.equalsIgnoreCase("Y")){
+						quit();
+					}
+				} // else move on and repeat loop. 
+				
+				System.out.println("Don't be silly. I asked for a NUMBER, didn't I?");
 			}
 		}
 	}
@@ -224,20 +251,16 @@ public class App {
 		player.move(direction);
 		
 		if(direction == NORTH){
-			System.out.println("You walked north..");
-			System.out.println(player.getPosition().toString());
+			System.out.println("You walked north." + " - " + getPlayerPositionDescription());
 		
 		} else if(direction == SOUTH){
-			System.out.println("You walked south..");
-			System.out.println(player.getPosition().toString());
+			System.out.println("You walked south." + " - " + getPlayerPositionDescription());
 		
 		} else if(direction == WEST){
-			System.out.println("You walked west..");
-			System.out.println(player.getPosition().toString());
+			System.out.println("You walked west." + " - " + getPlayerPositionDescription());
 		
 		} else if(direction == EAST){
-			System.out.println("You walked east..");
-			System.out.println(player.getPosition().toString());
+			System.out.println("You walked east." + " - " + getPlayerPositionDescription());
 		}
 	}
 	
@@ -266,19 +289,59 @@ public class App {
 				// was visited last round && is NOT currently occupied
 				if(oArea.visitedLastRound() && !oArea.mapPositionOccupied(playerPosition)){
 					((IExitable) oArea).onExit();
-					oArea.setVisitedLastRound(false);
+					oArea.setVisitedLastRound(false); // it was visited LAST round, but not anymore
+					oArea.setExitedLastRound(true); // if true, near events should not trigger
 				}
 			}
 		}
 		
 		// near events
 		for(OccupiedArea oArea : currentMap.getOccupiedAreaList()){
-			// if player is near and NOT already inside
-			if(oArea.playerIsNear(player) && !oArea.visitedLastRound()){
+			// if player is near and NOT already inside  and  NOT exited last round
+			if(oArea.playerIsNear(player) && !oArea.visitedLastRound() && !oArea.exitedLastRound()){
 				oArea.showOnNearMessage();
+			} else {
+				// we skipped the message if the player exited last round, but now we have to change it back
+				// this is ok because it's not used further down
+				oArea.setExitedLastRound(false); 
 			}
 		}
 		
+		// enemy events
+		ArrayList<EnemyBaseClass> enemiesToFight = new ArrayList<EnemyBaseClass>();
+		for(EnemyBaseClass enemy : currentMap.getEnemyList()){
+			// if player is in the same position as an enemy, add enemy to list so that they can be sent to battle.
+			if(playerPosition.equals(enemy.getPosition())){
+				enemiesToFight.add(enemy);
+			}
+		}
+		// if NOT empty
+		if(!(enemiesToFight.isEmpty())){
+			Battle battle = new Battle(player, enemiesToFight);
+			// start battle
+			battle.startBattle();
+			
+		}
+		
+	}
+	
+	private static String getPlayerPositionDescription(){
+		return String.format(	"You are now at position (%d,%d) in a %d * %d map.", 
+								player.getPosition().x,
+								player.getPosition().y,
+								currentMap.getMAX_X_POSITION(),
+								currentMap.getMAX_Y_POSITION()
+								);
+	}
+	
+	
+	
+	private static void quit(){
+		// close scanner
+		scanner.close();
+		// quit
+		System.out.println("Bye bye!");
+		System.exit(0);
 	}
 	
 

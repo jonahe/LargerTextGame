@@ -15,6 +15,7 @@ public abstract class OccupiedArea {
 	private String messageOnNear;
 	private List<Point> occupiedPoints; // Space that object occupies
 	private boolean visitedLastRound; // changes on enter. can be used, together with mapPositionOccupied, to see if player EXITED
+	private boolean exitedLastRound; //  changes on exit. can be used so that on near messages aren't triggered on exit
 	
 	
 	public OccupiedArea(String name, String messageOnNear, List<Point> occupiedPoints) {
@@ -30,6 +31,14 @@ public abstract class OccupiedArea {
 	
 	public void setVisitedLastRound(boolean visitedLastRound){
 		this.visitedLastRound = visitedLastRound;
+	}
+	
+	public boolean exitedLastRound(){
+		return exitedLastRound;
+	}
+	
+	public void setExitedLastRound(boolean exitedLastRound){
+		this.exitedLastRound = exitedLastRound;
 	}
 	
 	

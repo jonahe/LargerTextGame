@@ -6,7 +6,7 @@ import java.awt.Point;
  * Basic functionality to move, set position, translate position. Suitable to extend for players/enemies/etc.
  */
 
-public class MoveableObject {
+public class MovableObject {
 	
 	private Point position;
 	private int speed;
@@ -17,7 +17,7 @@ public class MoveableObject {
 	protected static final int WEST = 3;
 	protected static final int EAST = 4;
 	
-	public MoveableObject(Point startPosition, int speedOfmovement) {
+	public MovableObject(Point startPosition, int speedOfmovement) {
 		this.position = startPosition;
 		this.speed = speedOfmovement;	
 	}

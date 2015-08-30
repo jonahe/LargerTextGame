@@ -7,10 +7,11 @@ import java.awt.Point;
  *
  */
 
-public abstract class EnemyBaseClass extends MoveableObject implements Damageble {
+public abstract class EnemyBaseClass extends MovableObject implements Damageble {
 
 	private static int count; // for id creation
 	
+	private String typeName;
 	private int id;
 	private int health;
 	private String appearanceText;
@@ -19,8 +20,19 @@ public abstract class EnemyBaseClass extends MoveableObject implements Damageble
 	private String victoryText = "Hope you like eternal nothingness, because I just KILLED YOU!";
 	private boolean alive;
 	
-	EnemyBaseClass(int initialHealth, String apperanceText, String lowHealthText) {
+	/**
+	 * Enemy constructor
+	 * 
+	 * @param typeName The type of enemy. eg "Bird", "Wizard" etc.
+	 * @param initialHealth Starting health point
+	 * @param apperanceText Text to show upon first appearance
+	 * @param lowHealthText Text to show upon low health.
+	 */
+	
+	EnemyBaseClass(String typeName, int initialHealth, String apperanceText, String lowHealthText) {
+		// send start position and speed to parent class
 		super(new Point(0,0), 1);
+		this.typeName = typeName;
 		this.health = initialHealth;
 		this.appearanceText = apperanceText;
 		this.lowHealthText = lowHealthText;
@@ -36,6 +48,10 @@ public abstract class EnemyBaseClass extends MoveableObject implements Damageble
 		return id;
 	}
 	
+	public String getTypeName(){
+		return typeName;
+	}
+	
 	@Override
 	public void updateHealth(int damage) {
 		health -= damage;
@@ -47,24 +63,24 @@ public abstract class EnemyBaseClass extends MoveableObject implements Damageble
 		// dead
 		if(health <= 0) {
 			alive = false;
-			System.out.println("Ooooww. You.. you KILLED me..");
+			System.out.println(typeName + ": " + "Ooooww. You.. you KILLED me..");
 		}
 		else{
 			// low health
-			if(health <= 10) System.out.println(lowHealthText);
+			if(health <= 10) System.out.println(typeName + ": " + lowHealthText);
 			// high health
-			else System.out.println(highHealthText);
+			else System.out.println(typeName + ": " + highHealthText);
 			
 		}
 	}
 	
 	
 	public void showAppearanceMessage() {
-		System.out.println(appearanceText);
+		System.out.println(typeName + ": " + appearanceText);
 	}
 	
 	public void showVictoryMessage(){
-		System.out.println(victoryText);
+		System.out.println(typeName + ": " + victoryText);
 	}
 	
 	@Override

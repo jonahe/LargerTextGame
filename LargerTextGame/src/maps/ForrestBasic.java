@@ -12,6 +12,17 @@ public class ForrestBasic extends OccupiedArea implements IEnterable, IExitable 
 	private String messageOnEnter;
 	private String messageOnExit;
 
+	/**
+	 * Constructor for Forrest
+	 * 
+	 * @param name Name of forest. Not currently used.
+	 * @param messageOnNear Message to show if player is near.
+	 * @param messageOnEnter Message to show if player enters.
+	 * @param messageOnExit Message to show if player exits.
+	 * @param forrestStartPoint Upper left point (if map upper left point is 0,0) where forest begins.
+	 * @param width Width of forest.
+	 * @param height Height of forest.
+	 */
 	public ForrestBasic(String name, String messageOnNear, String messageOnEnter, String messageOnExit, Point forrestStartPoint, int width, int height) {
 		super(	"basic forrest", 
 				"Oh.. I recognize that smell. A forrest is near!", 

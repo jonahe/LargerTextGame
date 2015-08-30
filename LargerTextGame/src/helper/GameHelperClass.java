@@ -3,19 +3,21 @@ package helper;
 import java.awt.Point;
 import java.util.Random;
 
-import domain.MoveableObject;
+import domain.MovableObject;
 
 /**
  * Functions that are helpful and widely used in the game, but not specific to a certain object / class
  * 
  */
 
-public class GameHelperClass {
+public final class GameHelperClass {
 	
 	private static final int NORTH = 1;
 	private static final int SOUTH = 2;
 	private static final int WEST = 3;
 	private static final int EAST = 4;
+	
+	
 
 	/**
 	 * 
@@ -63,7 +65,7 @@ public class GameHelperClass {
 	 * 
 	 * @param objectToMove The object that should move
 	 */
-	public static void randomMove(MoveableObject objectToMove){
+	public static void randomMove(MovableObject objectToMove){
 		int direction = generateRandomNumberWithinSpan(1, 4);
 		objectToMove.move(direction);
 	}
@@ -73,10 +75,12 @@ public class GameHelperClass {
 	 * 
 	 * @param objectToMove Object to MAYBE move
 	 */
-	public static void randomMoveIncludingNoMove(MoveableObject objectToMove){
+	public static void randomMoveIncludingNoMove(MovableObject objectToMove){
 		Random randGen = new Random();
 		if(randGen.nextBoolean()){
 			randomMove(objectToMove);
 		}
 	}
+	
+	
 }
