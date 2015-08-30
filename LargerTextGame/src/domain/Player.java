@@ -7,8 +7,8 @@ import java.util.List;
 
 import helper.GameHelperClass;
 
-/*
- * Basic player. The ability to move is inherrited from MoveableObject
+/**
+ * Basic player.
  */
 
 public class Player extends MoveableObject implements Damageble {

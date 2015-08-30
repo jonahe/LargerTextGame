@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 
 import domain.Player;
@@ -181,7 +180,12 @@ public class App {
 
 	}
 	
-	// check if player tried to move outside of map
+	/**
+	 * Check if player tried to move outside of map
+	 * 
+	 * @param direction Direction that player wants to go in
+	 * @return boolean. true if move was ok. else false
+	 */
 	
 	private static boolean isValidMove(int direction){
 		
@@ -236,6 +240,12 @@ public class App {
 			System.out.println(player.getPosition().toString());
 		}
 	}
+	
+	/**
+	 * Checks for and triggers events that should happen on this position.
+	 * 
+	 * @param playerPosition Current position of player
+	 */
 	
 	private static void triggerEvents(Point playerPosition){
 	

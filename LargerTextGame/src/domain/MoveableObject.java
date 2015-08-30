@@ -2,6 +2,10 @@ package domain;
 
 import java.awt.Point;
 
+/**
+ * Basic functionality to move, set position, translate position. Suitable to extend for players/enemies/etc.
+ */
+
 public class MoveableObject {
 	
 	private Point position;

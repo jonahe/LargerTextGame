@@ -2,6 +2,11 @@ package domain;
 
 import java.awt.Point;
 
+/**
+ * Base-class for Enemies. Includes messages for low/high health in battle.
+ *
+ */
+
 public abstract class EnemyBaseClass extends MoveableObject implements Damageble {
 
 	private static int count; // for id creation
