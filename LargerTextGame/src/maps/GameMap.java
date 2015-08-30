@@ -19,15 +19,17 @@ public abstract class GameMap {
 	private int MAX_X_POSITION;
 	private int MAX_Y_POSITION;
 	// map "inhabitants"
-	//TODO: change to List<List<Point>> because we could have several "inhabitants"
-	private List<Point> occupiedPoints; // spaces "occupied" by forests, buildings, rocks etc.
+	//TODO: change to List<OccupiedArea> because we could have several "inhabitants"
+	private List<OccupiedArea> occupiedAreaList; 
+//	private List<Point> occupiedPoints; // spaces "occupied" by forests, buildings, rocks etc.
+//	private List<List<Point>> occupiedPointsList;
 	
 	
-	GameMap(String name, int mapDimensionX, int mapDimensionY, List<Point> occupiedPoints){
+	GameMap(String name, int mapDimensionX, int mapDimensionY, List<OccupiedArea> occupiedAreaList){
 		this.name = name;
 		MAX_X_POSITION = mapDimensionX;
 		MAX_Y_POSITION = mapDimensionY;
-		this.occupiedPoints = occupiedPoints;
+		this.occupiedAreaList = occupiedAreaList;
 	}
 
 
@@ -50,21 +52,68 @@ public abstract class GameMap {
 		return MAX_Y_POSITION;
 	}
 	
-
-	public boolean mapPositionOccupied(int xPos, int yPos){
-		Point point = new Point(xPos, yPos);
-		return occupiedPoints.contains(point);
+	public List<OccupiedArea> getOccupiedAreaList(){
+		return occupiedAreaList;
 	}
+	
+
+//	public boolean mapPositionOccupied(int xPos, int yPos){
+//		Point point = new Point(xPos, yPos);
+//		return occupiedPoints.contains(point);
+//	}
+	
+//	public boolean mapPositionOccupied(Point positionToCheck){
+//		
+//		boolean occupied = false;
+//		
+//		for(List<Point> pointList : occupiedPointsList){
+//			if(pointList.contains(positionToCheck)){
+//				occupied = true;
+//				break;
+//			} // else continue with loop
+//		}
+//		return occupied;
+//	}
+	
+	public boolean mapPositionOccupied(Point positionToCheck){
+		
+		boolean occupied = false;
+		
+		for(OccupiedArea occupiedArea : occupiedAreaList){
+			if(occupiedArea.mapPositionOccupied(positionToCheck)){
+				occupied = true;
+				break;
+			} // else continue with loop
+		}
+		return occupied;
+	}
+	
+//	// eg. for generating a safe starting point for player
+//	public Point getRandomNonOccupiedPoint(){
+//		Random randGen = new Random();
+//		while(true){
+//			int x = randGen.nextInt(MAX_X_POSITION + 1);
+//			int y = randGen.nextInt(MAX_Y_POSITION + 1);
+//			Point randPoint = new Point(x, y);
+//			if(occupiedPoints.contains(randPoint)){
+//				continue;
+//			}
+//			return randPoint;
+//		}
+//
+//	}
+	
 	
 	// eg. for generating a safe starting point for player
 	public Point getRandomNonOccupiedPoint(){
 		Random randGen = new Random();
 		while(true){
+			// generate possible position
 			int x = randGen.nextInt(MAX_X_POSITION + 1);
 			int y = randGen.nextInt(MAX_Y_POSITION + 1);
 			Point randPoint = new Point(x, y);
-			if(occupiedPoints.contains(randPoint)){
-				continue;
+			if(mapPositionOccupied(randPoint)){
+				continue; // return is not reached, we try with another number
 			}
 			return randPoint;
 		}

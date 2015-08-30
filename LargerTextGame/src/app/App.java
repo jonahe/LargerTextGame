@@ -1,6 +1,7 @@
 package app;
 
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,6 +14,9 @@ import domain.Weapon;
 import maps.GameMap;
 import maps.GameMapLevel01;
 import maps.GameMapLevel02;
+import maps.IEnterable;
+import maps.IExitable;
+import maps.OccupiedArea;
 
 public class App {
 
@@ -183,6 +187,9 @@ public class App {
 			// if move is valid, move player
 			if(isValidMove(direction)){
 				movePlayer(direction);
+				triggerEvents(player.getPosition());
+				
+				//TODO: check if enemy is present  -> launch fight..
 			}
 			
 		}
@@ -245,6 +252,41 @@ public class App {
 			System.out.println("You walked east..");
 			System.out.println(player.getPosition().toString());
 		}
+	}
+	
+	private static void triggerEvents(Point playerPosition){
+	
+		//TODO: figure out if you want check enter events first, and, if detected, skip near events (so that they do not fire over and over
+		// enter events
+		if(currentMap.mapPositionOccupied(playerPosition)){
+			for(OccupiedArea oArea : currentMap.getOccupiedAreaList()){
+				if(oArea instanceof IEnterable){
+					((IEnterable) oArea).onEnter();
+					oArea.setVisitedLastRound(true);
+				}
+			}
+		}
+		//TODO: figure out how to know if player exited. maybe a boolean that changes when you move into an OccupiedArea
+		// exit events
+		
+		for(OccupiedArea oArea : currentMap.getOccupiedAreaList()){
+			if(oArea instanceof IExitable){
+				// was visited last round && is NOT currently occupied
+				if(oArea.visitedLastRound() && !oArea.mapPositionOccupied(playerPosition)){
+					((IExitable) oArea).onExit();
+					oArea.setVisitedLastRound(false);
+				}
+			}
+		}
+		
+		// near events
+		for(OccupiedArea oArea : currentMap.getOccupiedAreaList()){
+			// if player is near and NOT already inside
+			if(oArea.playerIsNear(player) && !oArea.visitedLastRound()){
+				oArea.showOnNearMessage();
+			}
+		}
+		
 	}
 	
 	

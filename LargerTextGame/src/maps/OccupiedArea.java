@@ -14,13 +14,24 @@ public abstract class OccupiedArea {
 	private String name;
 	private String messageOnNear;
 	private List<Point> occupiedPoints; // Space that object occupies
+	private boolean visitedLastRound; // changes on enter. can be used, together with mapPositionOccupied, to see if player EXITED
 	
 	
 	public OccupiedArea(String name, String messageOnNear, List<Point> occupiedPoints) {
 		this.name = name;
 		this.messageOnNear = messageOnNear;
 		this.occupiedPoints = occupiedPoints;
+		visitedLastRound = false;
 	}
+	
+	public boolean visitedLastRound(){
+		return visitedLastRound;
+	}
+	
+	public void setVisitedLastRound(boolean visitedLastRound){
+		this.visitedLastRound = visitedLastRound;
+	}
+	
 	
 	public boolean mapPositionOccupied(Point positionToCheck){
 		return occupiedPoints.contains(positionToCheck);

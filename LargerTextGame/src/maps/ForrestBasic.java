@@ -12,7 +12,7 @@ public class ForrestBasic extends OccupiedArea implements IEnterable, IExitable 
 	private String messageOnEnter;
 	private String messageOnExit;
 
-	public ForrestBasic(String name, String messageOnNear, String messageOnEnter, String messageOnExit, List<Point> occupiedPoints, Point forrestStartPoint, int width, int height) {
+	public ForrestBasic(String name, String messageOnNear, String messageOnEnter, String messageOnExit, Point forrestStartPoint, int width, int height) {
 		super(	"basic forrest", 
 				"Oh.. I recognize that smell. A forrest is near!", 
 				createOccupiedPoints(forrestStartPoint, width, height)
