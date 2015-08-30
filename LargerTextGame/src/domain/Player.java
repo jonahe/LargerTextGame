@@ -32,7 +32,7 @@ public class Player extends MoveableObject implements Damageble {
 
 	}
 	
-	public void useWeapon(Enemy enemy) {
+	public void useWeapon(EnemyBaseClass enemy) {
 		enemy.updateHealth(weapon.getDamage());
 	}
 	

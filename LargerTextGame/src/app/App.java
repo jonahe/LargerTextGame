@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import domain.Enemy;
 import domain.Player;
 import domain.Weapon;
 import maps.GameMap;
@@ -23,7 +22,6 @@ public class App {
 	private static Scanner scanner;
 	
 	private static Player player;
-	private static List<Enemy> enemies = new ArrayList<Enemy>();
 	
 	private static final int NORTH = 1;
 	private static final int SOUTH = 2;
@@ -139,8 +137,6 @@ public class App {
 	private static void initializeGame() {
 		// setup scanners
 		scanner = new Scanner(System.in);
-
-		enemies.addAll(Arrays.asList(Enemy.values()));
 		
 		
 	}
@@ -167,18 +163,7 @@ public class App {
 			}
 		}
 	}
-	
-	private static int generateRandomFromOne(int inclusiveUpperLimit){
-		Random randGen = new Random();
-		// nextInt actually uses exclusive upper limit, but we add one to the result anyway, because our options start with 1, not 0.
-		int randNum = randGen.nextInt(inclusiveUpperLimit);
-		return ++randNum;
-	}
-	
-	private static Enemy generateRandomEnemy(){
-		int index = generateRandomFromOne(enemies.size());
-		return enemies.get(--index); //  --index since list index is zero-based
-	}
+		
 	
 	private static void exploreWorld(){
 		while(true){
@@ -194,8 +179,6 @@ public class App {
 			
 		}
 
-		
-		
 	}
 	
 	// check if player tried to move outside of map
@@ -256,7 +239,6 @@ public class App {
 	
 	private static void triggerEvents(Point playerPosition){
 	
-		//TODO: figure out if you want check enter events first, and, if detected, skip near events (so that they do not fire over and over
 		// enter events
 		if(currentMap.mapPositionOccupied(playerPosition)){
 			for(OccupiedArea oArea : currentMap.getOccupiedAreaList()){
@@ -266,7 +248,7 @@ public class App {
 				}
 			}
 		}
-		//TODO: figure out how to know if player exited. maybe a boolean that changes when you move into an OccupiedArea
+		
 		// exit events
 		
 		for(OccupiedArea oArea : currentMap.getOccupiedAreaList()){
@@ -288,10 +270,6 @@ public class App {
 		}
 		
 	}
-	
-	
-	
-	
 	
 
 

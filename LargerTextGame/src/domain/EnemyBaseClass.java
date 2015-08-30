@@ -1,24 +1,10 @@
 package domain;
 
-public enum Enemy implements Damageble {
+import java.awt.Point;
 
-	WIZARD(	1,
-			200, 
-			"Muhahaha, fear the mighty Wizard! Feel my magic wrath!", 
-			"Oh, please. Don't kill me. I'm just an old weak man!"),
-	
-	TROLL(	2,
-			150, 
-			"AaAhhahah, me be a trooll. You be scared! Ahhaha!",
-			"Ow, ow, ow.. My poor body hurts! Please stop?"
-			),
-	
-	BIRD(	3,
-			30,
-			"Beep beeep. Beeeeeeeeeep. Annoying, right? Haha!", 
-			"Skewwweeek. Don't kill me, I'm just a little defensless bird!"
-			)
-	;
+public abstract class EnemyBaseClass extends MoveableObject implements Damageble {
+
+	private static int count; // for id creation
 	
 	private int id;
 	private int health;
@@ -28,11 +14,13 @@ public enum Enemy implements Damageble {
 	private String victoryText = "Hope you like eternal nothingness, because I just KILLED YOU!";
 	private boolean alive;
 	
-	Enemy(int id, int health, String apperanceText, String lowHealthText) {
-		this.health = health;
+	EnemyBaseClass(int initialHealth, String apperanceText, String lowHealthText) {
+		super(new Point(0,0), 1);
+		this.health = initialHealth;
 		this.appearanceText = apperanceText;
 		this.lowHealthText = lowHealthText;
 		alive = true;
+		this.id = count++;
 	}
 	
 	public int getHealth() {
@@ -66,8 +54,12 @@ public enum Enemy implements Damageble {
 	}
 	
 	
-	public void showAppearanceText() {
+	public void showAppearanceMessage() {
 		System.out.println(appearanceText);
+	}
+	
+	public void showVictoryMessage(){
+		System.out.println(victoryText);
 	}
 	
 	@Override
@@ -75,8 +67,5 @@ public enum Enemy implements Damageble {
 		return alive;
 	}
 	
-	@Override
-	public String toString() {
-		return this.name().toLowerCase();
-	}
+
 }

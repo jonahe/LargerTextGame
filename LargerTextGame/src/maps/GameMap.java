@@ -19,10 +19,7 @@ public abstract class GameMap {
 	private int MAX_X_POSITION;
 	private int MAX_Y_POSITION;
 	// map "inhabitants"
-	//TODO: change to List<OccupiedArea> because we could have several "inhabitants"
-	private List<OccupiedArea> occupiedAreaList; 
-//	private List<Point> occupiedPoints; // spaces "occupied" by forests, buildings, rocks etc.
-//	private List<List<Point>> occupiedPointsList;
+	private List<OccupiedArea> occupiedAreaList;
 	
 	
 	GameMap(String name, int mapDimensionX, int mapDimensionY, List<OccupiedArea> occupiedAreaList){
@@ -56,24 +53,6 @@ public abstract class GameMap {
 		return occupiedAreaList;
 	}
 	
-
-//	public boolean mapPositionOccupied(int xPos, int yPos){
-//		Point point = new Point(xPos, yPos);
-//		return occupiedPoints.contains(point);
-//	}
-	
-//	public boolean mapPositionOccupied(Point positionToCheck){
-//		
-//		boolean occupied = false;
-//		
-//		for(List<Point> pointList : occupiedPointsList){
-//			if(pointList.contains(positionToCheck)){
-//				occupied = true;
-//				break;
-//			} // else continue with loop
-//		}
-//		return occupied;
-//	}
 	
 	public boolean mapPositionOccupied(Point positionToCheck){
 		
@@ -87,21 +66,6 @@ public abstract class GameMap {
 		}
 		return occupied;
 	}
-	
-//	// eg. for generating a safe starting point for player
-//	public Point getRandomNonOccupiedPoint(){
-//		Random randGen = new Random();
-//		while(true){
-//			int x = randGen.nextInt(MAX_X_POSITION + 1);
-//			int y = randGen.nextInt(MAX_Y_POSITION + 1);
-//			Point randPoint = new Point(x, y);
-//			if(occupiedPoints.contains(randPoint)){
-//				continue;
-//			}
-//			return randPoint;
-//		}
-//
-//	}
 	
 	
 	// eg. for generating a safe starting point for player
