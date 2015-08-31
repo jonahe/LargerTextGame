@@ -320,6 +320,16 @@ public class App {
 			Battle battle = new Battle(player, enemiesToFight);
 			// start battle
 			battle.startBattle();
+			// after battle 
+			// remove killed enemies
+			List<EnemyBaseClass> killedEnemies = battle.getKilledEnemies();
+			for(EnemyBaseClass enemy : killedEnemies){
+				currentMap.getEnemyList().remove(enemy);
+			}
+			// and give report on progress - if one or more enemies were killed
+			if(killedEnemies.size() >= 1){
+				System.out.println("Good job! Only " + currentMap.getEnemyList().size() + " enemies left." );
+			}
 			
 		}
 		

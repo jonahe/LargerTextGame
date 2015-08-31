@@ -7,18 +7,15 @@ import java.awt.Point;
  *
  */
 
-public abstract class EnemyBaseClass extends MovableObject implements Damageble {
+public abstract class EnemyBaseClass extends GameAgent implements Damageable {
 
 	private static int count; // for id creation
 	
-	private String typeName;
 	private int id;
-	private int health;
 	private String appearanceText;
 	private String lowHealthText;
 	private String highHealthText = "Ha? Is that all you got? Pathetic!";
 	private String victoryText = "Hope you like eternal nothingness, because I just KILLED YOU!";
-	private boolean alive;
 	
 	/**
 	 * Enemy constructor
@@ -29,10 +26,14 @@ public abstract class EnemyBaseClass extends MovableObject implements Damageble 
 	 * @param lowHealthText Text to show upon low health.
 	 */
 	
-	EnemyBaseClass(String typeName, int initialHealth, String apperanceText, String lowHealthText) {
+	EnemyBaseClass(String typeName, int initialHealth, Weapon weapon, String apperanceText, String lowHealthText) {
 		// send start position and speed to parent class
-		super(new Point(0,0), 1);
-		this.typeName = typeName;
+		super(	new Point(0,0),
+				1,
+				typeName,
+				initialHealth,
+				weapon
+				);
 		this.health = initialHealth;
 		this.appearanceText = apperanceText;
 		this.lowHealthText = lowHealthText;
@@ -40,21 +41,18 @@ public abstract class EnemyBaseClass extends MovableObject implements Damageble 
 		this.id = count++;
 	}
 	
-	public int getHealth() {
-		return health;
-	}
 	
 	public int getId(){
 		return id;
 	}
 	
-	public String getTypeName(){
-		return typeName;
-	}
 	
+	/**
+	 * Like parent, but also triggers health related message
+	 */
 	@Override
 	public void updateHealth(int damage) {
-		health -= damage;
+		super.updateHealth(damage);
 		showHealthRelatedMessage();
 
 	}
@@ -63,29 +61,24 @@ public abstract class EnemyBaseClass extends MovableObject implements Damageble 
 		// dead
 		if(health <= 0) {
 			alive = false;
-			System.out.println(typeName + ": " + "Ooooww. You.. you KILLED me..");
+			System.out.println(getName() + ": " + "Ooooww. You.. you KILLED me..");
 		}
 		else{
 			// low health
-			if(health <= 10) System.out.println(typeName + ": " + lowHealthText);
+			if(health <= 10) System.out.println(getName() + ": " + lowHealthText);
 			// high health
-			else System.out.println(typeName + ": " + highHealthText);
+			else System.out.println(getName() + ": " + highHealthText);
 			
 		}
 	}
 	
 	
 	public void showAppearanceMessage() {
-		System.out.println(typeName + ": " + appearanceText);
+		System.out.println(getName() + ": " + appearanceText);
 	}
 	
 	public void showVictoryMessage(){
-		System.out.println(typeName + ": " + victoryText);
-	}
-	
-	@Override
-	public boolean isAlive() {
-		return alive;
+		System.out.println(getName() + ": " + victoryText);
 	}
 	
 

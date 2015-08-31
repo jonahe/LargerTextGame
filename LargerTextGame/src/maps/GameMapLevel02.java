@@ -63,15 +63,15 @@ public class GameMapLevel02 extends GameMap {
 		// add enemies -- need many on a 26*26 (~650 points)
 		
 		// 20 birds
-		for(int i = 0; i <= 20; i++){
+		for(int i = 0; i < 20; i++){
 			enemyList.add(new EnemyBird());
 		}
 		// 10 Trolls
-		for(int i = 0; i <= 10; i++){
+		for(int i = 0; i < 10; i++){
 			enemyList.add(new EnemyTroll());
 		}
 		// 5 Wizards
-		for(int i = 0; i <= 5; i++){
+		for(int i = 0; i < 5; i++){
 			enemyList.add(new EnemyWizard());
 		}
 		

@@ -18,8 +18,12 @@ public enum Weapon {
 		this.sound = sound;
 	}
 	
-	public void makeSound(){
-		System.out.println(sound);
+	/**
+	 * Print the sound of the weapon. eg "Wizard: Stabb stabb!"
+	 * @param agentName Name of the one using the weapon
+	 */
+	public void makeSound(String agentName){
+		System.out.println(agentName + " used " + this.toString() + ": " + sound);
 	}
 	
 	public int getId(){

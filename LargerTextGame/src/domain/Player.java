@@ -11,42 +11,34 @@ import helper.GameHelperClass;
  * Basic player.
  */
 
-public class Player extends MovableObject implements Damageble {
+public class Player extends GameAgent implements Damageable {
 	
-	private String name;
-	private Weapon weapon;
-	private int health;
-	private boolean alive;
+	private int handicap;
 	
 	private List<Point> surroundingClosePoints;
 	
 	public Player(String name, Weapon weapon, int handicap) {
-		super(new Point(0,0), 1);
-		this.name = name;
-		this.weapon = weapon;
-		health = 100;
-		alive = true;
+		super(	new Point(0,0), 
+				1,
+				name,
+				100,
+				weapon
+				);
+		
 		// set handicap
-		this.weapon.setHandicap(handicap);
+		super.getWeapon().setHandicap(handicap);
 		createSurroundingClosePoints();
 
 	}
-	
-	public void useWeapon(EnemyBaseClass enemy) {
-		weapon.makeSound();
-		enemy.updateHealth(weapon.getDamage());
+		
+
+	// player has handicap, so we override the original method from GameAgent
+	@Override
+	public void setWeapon(Weapon newWeapon){
+		super.setWeapon(newWeapon);
+		super.getWeapon().setHandicap(handicap);
 	}
 	
-	public String getName(){
-		return name;
-	}
-	public Weapon getWeapon() {
-		return weapon;
-	}
-	
-	public int getHealth() {
-		return health;
-	}
 	
 	public List<Point> getSurroundingClosePoints(){
 		return surroundingClosePoints;
@@ -72,19 +64,6 @@ public class Player extends MovableObject implements Damageble {
 		createSurroundingClosePoints();
 	}
 	
-	
-	@Override
-	public void updateHealth(int damage) {
-		health -= damage;
-		if(health <= 0){
-			alive = false;
-		}
-	}
-
-	@Override
-	public boolean isAlive() {
-		return alive;
-	}
 	
 	public void createSurroundingClosePoints(){
 		// clone current position
