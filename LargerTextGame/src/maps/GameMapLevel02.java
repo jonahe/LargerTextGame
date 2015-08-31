@@ -11,22 +11,23 @@ import domain.EnemyTroll;
 import domain.EnemyWizard;
 
 /*
- * A 26 * 26 map with a big (3 * 9) rectangle forest near the middle.
+ * A 10 * 10 map with a 5 * 5 occupied square (forest) in top right corner
  * 
  */
 
 public class GameMapLevel02 extends GameMap {
 
 	public GameMapLevel02() {
-		super(	"Level 2 - 'Something weird near the middle'", 
-				26, 
-				26, 
+		super(	"Level 2 - 'Something green in the corner'", 
+				10, 
+				10, 
 				createOccupiedAreaList(),
 				createEnemyList()
 				);
+		
+		
 	}
-
-
+	
 	//TODO: figure out how to avoid this code / documentation duplication between maps
 	
 	/**
@@ -41,10 +42,10 @@ public class GameMapLevel02 extends GameMap {
 				new ForrestBasic( 	"The dark forrest", 
 									"Oh, do I smell rotting leafs and dirt?", 
 									"Yeah, it was a forest. Trees, trees, trees. Forests can be pretty boring..", 
-									"Phew, I thought the forest would never end. But now we're out in the open again!",
-									new Point(8,4), 
-									3, 
-									9
+									"Phew, I thought the forest would never end. But now we're out in the open again!",  
+									new Point(5,0), 
+									5, 
+									5
 									);
 		occupiedAreaList.add(forest5x5);
 		return occupiedAreaList;
@@ -58,29 +59,26 @@ public class GameMapLevel02 extends GameMap {
 	 * @return List of all enemies in this map.
 	 */
 	
+	
 	private static List<EnemyBaseClass> createEnemyList(){
 		List<EnemyBaseClass> enemyList = new ArrayList<EnemyBaseClass>();
-		// add enemies -- need many on a 26*26 (~650 points)
+		// add enemies -- need many on a 12*12 (144 coordinates)
 		
-		// 20 birds
-		for(int i = 0; i < 20; i++){
+		// 6 birds
+		for(int i = 0; i < 6; i++){
 			enemyList.add(new EnemyBird());
 		}
-		// 10 Trolls
-		for(int i = 0; i < 10; i++){
+		// 3 Trolls
+		for(int i = 0; i < 3; i++){
 			enemyList.add(new EnemyTroll());
 		}
-		// 5 Wizards
-		for(int i = 0; i < 5; i++){
+		// 1 Wizards
+		for(int i = 0; i < 1; i++){
 			enemyList.add(new EnemyWizard());
 		}
 		
-
-
 		return enemyList;
+		
 	}
-	
-	
-
 
 }

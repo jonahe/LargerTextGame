@@ -41,6 +41,7 @@ public class Battle {
 		
 		//TODO: use time difference to decide how much damage each attack should be. (adds a skill element). eg. attack as close to 3 seconds as possible?
 		
+		// battle one enemy at the time
 		for(EnemyBaseClass enemy : enemyList){
 			currentEnemy = enemy;
 			if(enemy.isAlive()){
@@ -54,6 +55,22 @@ public class Battle {
 					// if enemy still alive, let enemy attack
 					if(enemy.isAlive()){
 						enemy.useWeapon(player);
+						// if player is low on health, but alive - provide option to heal, or quit
+						if(player.getHealth() < 20 && player.isAlive()){
+							showBattleHealthStatus();
+							System.out.println("WARNING: You are dangerously low on health.");
+							int answer  = askForAndGetNextInt("What do you want to do? 1) Drink healing potion (adds 25 hp), 2) Gamble!", 1, 2);
+							if(answer == 1){
+								player.setHealth((player.getHealth()) + 25);
+							}
+						}
+						// if player is dead..
+						if(!player.isAlive()){
+							enemy.showVictoryMessage();
+							System.out.println("OH NOOOO! You DIED!");
+							return; // breaks out of the whole method
+						}
+						
 					}
 					
 				} else if(response == RUN_AWAY) {

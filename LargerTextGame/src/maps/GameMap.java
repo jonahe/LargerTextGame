@@ -24,6 +24,7 @@ public abstract class GameMap {
 	// map "inhabitants"
 	private List<OccupiedArea> occupiedAreaList; // for forests/buildings etc
 	private List<EnemyBaseClass> enemyList;
+	//TODO: add list with "equipment" / power-ups. Maybe weapons -> meny (switch weapon. leaves old weapon). Need "medicine" to heal player
 	
 	
 	GameMap(String name, int mapDimensionX, int mapDimensionY, List<OccupiedArea> occupiedAreaList, List<EnemyBaseClass> enemyList){
@@ -72,13 +73,15 @@ public abstract class GameMap {
 		boolean occupied = false;
 		
 		for(OccupiedArea occupiedArea : occupiedAreaList){
-			if(occupiedArea.mapPositionOccupied(positionToCheck)){
+			if(occupiedArea.pointIsInsideArea(positionToCheck)){
 				occupied = true;
 				break;
 			} // else continue with loop
 		}
 		return occupied;
 	}
+	
+	
 	
 	
 	public void setUniqueRandomEnemyPositions(){
@@ -99,7 +102,6 @@ public abstract class GameMap {
 				}
 			}
 		}
-		System.out.println(positionsAlreadyTaken);
 	}
 	
 	public Point getRandomMapPoint(){
@@ -122,7 +124,7 @@ public abstract class GameMap {
 			boolean pointOK = true;
 			for(OccupiedArea area : occupiedAreaList){
 				if(!(area instanceof IEnterable)){ // NOT enterable
-					if(area.mapPositionOccupied(randPoint)){
+					if(area.pointIsInsideArea(randPoint)){
 						pointOK = false;
 						break; 	// break the for-loop if a non-enterable area is already occupying that point. 
 								// We need to run the while loop again

@@ -2,6 +2,7 @@ package maps;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import domain.EnemyBaseClass;
@@ -10,23 +11,22 @@ import domain.EnemyTroll;
 import domain.EnemyWizard;
 
 /*
- * A 6 * 6 map with a 2 * 2 occupied square (forest) in the middle
+ * A 12 * 12 map with a big (3 * 9) rectangle forest near the middle.
  * 
  */
 
-public class GameMapLevel01 extends GameMap {
+public class GameMapLevel03 extends GameMap {
 
-	public GameMapLevel01() {
-		super(	"Level 1 - 'Something green in the middle'", 
-				6, 
-				6, 
+	public GameMapLevel03() {
+		super(	"Level 3 - 'Something green near the middle'", 
+				12, 
+				12, 
 				createOccupiedAreaList(),
 				createEnemyList()
 				);
-		
-		
 	}
-	
+
+
 	//TODO: figure out how to avoid this code / documentation duplication between maps
 	
 	/**
@@ -37,16 +37,16 @@ public class GameMapLevel01 extends GameMap {
 
 	private static List<OccupiedArea> createOccupiedAreaList() {
 		List<OccupiedArea> occupiedAreaList = new ArrayList<OccupiedArea>();
-		ForrestBasic forest2x2 = 
+		ForrestBasic forest5x5 = 
 				new ForrestBasic( 	"The dark forrest", 
 									"Oh, do I smell rotting leafs and dirt?", 
 									"Yeah, it was a forest. Trees, trees, trees. Forests can be pretty boring..", 
-									"Phew, I thought the forest would never end. But now we're out in the open again!",  
-									new Point(2,2), 
-									2, 
-									2
+									"Phew, I thought the forest would never end. But now we're out in the open again!",
+									new Point(8,4), 
+									3, 
+									9
 									);
-		occupiedAreaList.add(forest2x2);
+		occupiedAreaList.add(forest5x5);
 		return occupiedAreaList;
 	}
 	
@@ -58,26 +58,27 @@ public class GameMapLevel01 extends GameMap {
 	 * @return List of all enemies in this map.
 	 */
 	
-	
 	private static List<EnemyBaseClass> createEnemyList(){
 		List<EnemyBaseClass> enemyList = new ArrayList<EnemyBaseClass>();
-		// add enemies --  6*6 map (36 coordinates)
+		// add enemies -- need many on a 12*12 (144 coordinates)
 		
-		// 3 birds
-		for(int i = 0; i < 3; i++){
+		// 8 birds
+		for(int i = 0; i < 8; i++){
 			enemyList.add(new EnemyBird());
 		}
-		// 3 Trolls
-		for(int i = 0; i < 3; i++){
+		// 4 Trolls
+		for(int i = 0; i < 4; i++){
 			enemyList.add(new EnemyTroll());
 		}
-		// 1 Wizards
-		for(int i = 0; i < 1; i++){
+		// 2 Wizards
+		for(int i = 0; i < 2; i++){
 			enemyList.add(new EnemyWizard());
 		}
 		
 		return enemyList;
-		
 	}
+	
+	
+
 
 }

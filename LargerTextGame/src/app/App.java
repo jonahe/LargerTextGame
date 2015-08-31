@@ -15,6 +15,7 @@ import domain.Weapon;
 import maps.GameMap;
 import maps.GameMapLevel01;
 import maps.GameMapLevel02;
+import maps.GameMapLevel03;
 import maps.IEnterable;
 import maps.IExitable;
 import maps.OccupiedArea;
@@ -25,8 +26,8 @@ public class App {
 	
 	private static Player player;
 	
-	private static final int NORTH = 1;
-	private static final int SOUTH = 2;
+	private static final int NORTH = 1; 
+	private static final int SOUTH = 2; 
 	private static final int WEST = 3;
 	private static final int EAST = 4;
 	
@@ -34,8 +35,9 @@ public class App {
 	
 	// maps to choose from  --  add new levels here
 	private static List<GameMap> mapList = 
-			new ArrayList<GameMap>(Arrays.asList(	new GameMapLevel01(), 
-													new GameMapLevel02()
+			new ArrayList<GameMap>(Arrays.asList(	new GameMapLevel01(),
+													new GameMapLevel02(), 
+													new GameMapLevel03()
 													));
 	private static GameMap currentMap;
 	
@@ -43,27 +45,30 @@ public class App {
 		
 		initializeGame();
 		
-		System.out.println("Welcome to the game!");
+		// keeps going if player died and exited the game loop, it will just start over
+		while(true){
 		
-		// setup
-		setupPlayer();
-		chooseMap();
+			System.out.println("Welcome to the game!");
+			// setup
+			setupPlayer();
+
+			chooseMap();
+
+			// Welcome to the game.
+			System.out.printf(	"Hello %s! Good pick, %s is a nice weapon of choice. Let's begin the adventure!\n", 
+								player.getName(),
+								player.getWeapon());
+			String info = "\nRemember: to QUIT, just write \"q\" as input and press enter.";
+			System.out.println(info);
+
+			// start game loop
+			gameLoop();
+			
+			// try to remove any lingering input that might interfere with the setting up of the player
+			scanner.next();
 		
-		// Welcome to the game.
-		System.out.printf(	"Hello %s! Good pick, %s is a nice weapon of choice. Let's begin the adventure!\n", 
-							player.getName(),
-							player.getWeapon());
-		String info = "\nRemember: to QUIT, just write \"q\" as input and press enter.";
-		System.out.println(info);
+		}
 		
-		// start game loop
-		gameLoop();
-		
-		
-		
-		// end main. close scanner
-		scanner.close();
-		System.out.println("Bye bye!");
 		
 
 	}
@@ -133,8 +138,32 @@ public class App {
 	
 	
 	private static void gameLoop() {
+		while(true){
+			// move around in world and discover things.. 
+			exploreWorld();
+			
+			// if all the enemies are gone, break the loop
+			if(currentMap.getEnemyList().size() == 0){
+				System.out.println("Congratulations! You completed " + currentMap.getName());
+				// Ask if they want to continue or quit
+				int choice = askForAndGetNextInt("What do you want to do? 1) Play again, 2) Quit", 1, 2);
+				if(choice == 2){
+					quit();
+				} else{
+					break; // break out, end up in loop in the main method
+				}
+			}
+			// if player is dead after battle 
+			if(!player.isAlive()){
+				int choice = askForAndGetNextInt("What do you want to do? 1) Play again, 2) Quit", 1, 2);
+				if(choice == 2){
+					quit();
+				} else{
+					break; // break out, end up in loop in the main method
+				}
+			}
+		}
 		
-		exploreWorld();
 		
 		
 	}
@@ -159,7 +188,8 @@ public class App {
 		// keep asking for an int until there is one
 		while(true){
 			// show the message
-			System.out.println(askMessage);
+			System.out.println();
+			System.out.print(askMessage);
 			// wait for input and check if it is an int.
 			if(scanner.hasNextInt()){
 				// check if input if within the valid range
@@ -190,20 +220,18 @@ public class App {
 		}
 	}
 		
-	
+	// this is really more of the "game loop" 
 	private static void exploreWorld(){
-		while(true){
-			int direction = askForAndGetNextInt("Which direction do you want to go?\n1) North, 2) South, 3) West, 4) East: ", 1, 4);
-			
-			// if move is valid, move player
-			if(isValidMove(direction)){
-				movePlayer(direction);
-				triggerEvents(player.getPosition());
-				
-				//TODO: check if enemy is present  -> launch fight..
-			}
-			
+
+		int direction = askForAndGetNextInt("Which direction do you want to go?\n1) North, 2) South, 3) West, 4) East: ", 1, 4);
+
+		// if move is valid, move player
+		if(isValidMove(direction)){
+			movePlayer(direction);
+			triggerEvents(player.getPosition());
+
 		}
+
 
 	}
 	
@@ -287,7 +315,7 @@ public class App {
 		for(OccupiedArea oArea : currentMap.getOccupiedAreaList()){
 			if(oArea instanceof IExitable){
 				// was visited last round && is NOT currently occupied
-				if(oArea.visitedLastRound() && !oArea.mapPositionOccupied(playerPosition)){
+				if(oArea.visitedLastRound() && !oArea.pointIsInsideArea(playerPosition)){
 					((IExitable) oArea).onExit();
 					oArea.setVisitedLastRound(false); // it was visited LAST round, but not anymore
 					oArea.setExitedLastRound(true); // if true, near events should not trigger
@@ -331,16 +359,20 @@ public class App {
 				System.out.println("Good job! Only " + currentMap.getEnemyList().size() + " enemies left." );
 			}
 			
+			// it's possible the player got killed.
+			// if killed - 
+			if(!player.isAlive()){
+				return; // exit the method
+			}
+			
 		}
 		
 	}
 	
 	private static String getPlayerPositionDescription(){
-		return String.format(	"You are now at position (%d,%d) in a %d * %d map.", 
+		return String.format(	"You are now at position (%d,%d)", 
 								player.getPosition().x,
-								player.getPosition().y,
-								currentMap.getMAX_X_POSITION(),
-								currentMap.getMAX_Y_POSITION()
+								player.getPosition().y
 								);
 	}
 	

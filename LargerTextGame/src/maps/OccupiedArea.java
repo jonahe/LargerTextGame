@@ -14,7 +14,7 @@ public abstract class OccupiedArea {
 	private String name;
 	private String messageOnNear;
 	private List<Point> occupiedPoints; // Space that object occupies
-	private boolean visitedLastRound; // changes on enter. can be used, together with mapPositionOccupied, to see if player EXITED
+	private boolean visitedLastRound; // changes on enter. can be used, together with pointIsInsideArea(), to see if player EXITED
 	private boolean exitedLastRound; //  changes on exit. can be used so that on near messages aren't triggered on exit
 	
 	
@@ -41,8 +41,13 @@ public abstract class OccupiedArea {
 		this.exitedLastRound = exitedLastRound;
 	}
 	
-	
-	public boolean mapPositionOccupied(Point positionToCheck){
+	/**
+	 * Checks if a point (the param) is inside this particular area
+	 * 
+	 * @param positionToCheck
+	 * @return True if it's inside, else false.
+	 */
+	public boolean pointIsInsideArea(Point positionToCheck){
 		return occupiedPoints.contains(positionToCheck);
 	}
 	
