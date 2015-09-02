@@ -142,7 +142,7 @@ public abstract class GameMap {
 	}
 	
 	
-	// eg. for generating a safe starting point for player
+	// eg. for generating a safe starting point for player, and outside enterable areas like forrests
 	public Point getRandomNonOccupiedPoint(){
 		while(true){
 			Point randPoint = getRandomMapPoint();

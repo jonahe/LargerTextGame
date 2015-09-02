@@ -49,19 +49,19 @@ public class Battle {
 			}
 			while(enemy.isAlive()){
 				showBattleHealthStatus();
-				int response = askForAndGetNextInt("What do you want to do? 1) Attack, 2) Panic, run away! (Random direction) : ", 1, 2);
+				int response = askForAndGetNextInt("What do you want to do? 1) Attack, 2) Panic, run away! (Random direction)", 1, 2);
 				if(response == ATTACK){
 					player.useWeapon(enemy);
 					// if enemy still alive, let enemy attack
 					if(enemy.isAlive()){
 						enemy.useWeapon(player);
 						// if player is low on health, but alive - provide option to heal, or quit
-						if(player.getHealth() < 20 && player.isAlive()){
+						if(player.getHealth() < 23 && player.isAlive()){
 							showBattleHealthStatus();
 							System.out.println("WARNING: You are dangerously low on health.");
 							int answer  = askForAndGetNextInt("What do you want to do? 1) Drink healing potion (adds 25 hp), 2) Gamble!", 1, 2);
 							if(answer == 1){
-								player.setHealth((player.getHealth()) + 25);
+								player.setHealth((player.getHealth()) + 35);
 							}
 						}
 						// if player is dead..

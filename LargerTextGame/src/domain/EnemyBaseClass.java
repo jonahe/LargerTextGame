@@ -1,6 +1,7 @@
 package domain;
 
 import java.awt.Point;
+import java.util.Random;
 
 /**
  * Base-class for Enemies. Includes messages for low/high health in battle.
@@ -45,6 +46,21 @@ public abstract class EnemyBaseClass extends GameAgent implements Damageable {
 	public int getId(){
 		return id;
 	}
+	
+	// need special implementation because we want damage to fluctuate.
+	@Override
+	public void useWeapon(GameAgent victim){
+		Random randGenerator = new Random();
+		double effectiveness = randGenerator.nextDouble();
+		int damage = (int) (weapon.getDamage() * effectiveness);
+		// minimum damage = 10
+		if(damage < 10){
+			damage = 10;
+		}
+		weapon.makeSound(name);
+		victim.updateHealth(damage);
+	}
+	
 	
 	
 	/**

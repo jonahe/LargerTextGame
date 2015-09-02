@@ -90,7 +90,7 @@ public class App {
 		}
 		// trim off the last comma, and add colon
 		int length = weaponChoiceMessage.length();
-		weaponChoiceMessage = weaponChoiceMessage.substring(0, (length-2)) + ": ";
+		weaponChoiceMessage = weaponChoiceMessage.substring(0, (length-2));
 
 		// Choose weapon
 		weaponId = askForAndGetNextInt(weaponChoiceMessage, 1, Weapon.values().length);
@@ -107,7 +107,7 @@ public class App {
 		int easy = 1;
 		int normal = 2;
 		int hard = 3;
-		handicap = askForAndGetNextInt("Choose the difficulty of your game: 1) Easy, 2) Normal, 3 Hard: ", 1, 3);
+		handicap = askForAndGetNextInt("Choose the difficulty of your game: 1) Easy, 2) Normal, 3 Hard", 1, 3);
 		if(handicap == easy) handicap = 5;
 		else if (handicap == normal) handicap = 0;
 		else if (handicap == hard) handicap = -5;
@@ -125,7 +125,7 @@ public class App {
 		for(GameMap map : mapList){
 			mapOptions += count + ") " + map.toString() + "\n";
 			count++;
-		}
+		} 
 		int chosenMapIndex = askForAndGetNextInt(mapOptions, 1, mapList.size());
 		// adjust to 0 index
 		chosenMapIndex--;
@@ -190,7 +190,7 @@ public class App {
 		while(true){
 			// show the message
 			System.out.println();
-			System.out.print(askMessage);
+			System.out.print(askMessage + ": ");
 			// wait for input and check if it is an int.
 			if(scanner.hasNextInt()){
 				// check if input if within the valid range
@@ -213,6 +213,8 @@ public class App {
 					String confirmation = scanner.next();
 					if(confirmation.equalsIgnoreCase("Y")){
 						quit();
+					} else {
+						continue;
 					}
 				} // else move on and repeat loop. 
 				
@@ -224,7 +226,7 @@ public class App {
 	// this is really more of the "game loop" 
 	private static void exploreWorld(){
 
-		int direction = askForAndGetNextInt("Which direction do you want to go?\n1) North, 2) South, 3) West, 4) East: ", 1, 4);
+		int direction = askForAndGetNextInt("Which direction do you want to go?\n1) North, 2) South, 3) West, 4) East", 1, 4);
 
 		// if move is valid, move player
 		if(isValidMove(direction)){

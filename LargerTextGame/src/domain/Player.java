@@ -26,17 +26,16 @@ public class Player extends GameAgent implements Damageable {
 				);
 		
 		// set handicap
-		super.getWeapon().setHandicap(handicap);
-		createSurroundingClosePoints();
+		this.handicap = handicap;
 
 	}
 		
-
-	// player has handicap, so we override the original method from GameAgent
+	// need special implementation because of potential player handicap
 	@Override
-	public void setWeapon(Weapon newWeapon){
-		super.setWeapon(newWeapon);
-		super.getWeapon().setHandicap(handicap);
+	public void useWeapon(GameAgent victim){
+		weapon.makeSound(name);
+		int damage = weapon.getDamage() + handicap;
+		victim.updateHealth(damage);
 	}
 	
 	

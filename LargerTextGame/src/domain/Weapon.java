@@ -9,7 +9,6 @@ public enum Weapon {
 	
 	private int id;
 	private int damage;
-	private int handicap;
 	private String sound;
 	
 	Weapon(int id, int damage, String sound){
@@ -34,15 +33,6 @@ public enum Weapon {
 		return damage;
 	}
 	
-	public void setHandicap(int handicap){
-		this.handicap = handicap;
-		// add handicap to weapon damage
-		this.damage += handicap;
-	}
-	
-	public int getHandicap(){
-		return handicap;
-	}
 	
 	@Override
 	public String toString(){
