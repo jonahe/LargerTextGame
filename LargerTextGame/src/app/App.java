@@ -65,7 +65,8 @@ public class App {
 			gameLoop();
 			
 			// try to remove any lingering input that might interfere with the setting up of the player
-			scanner.next();
+			scanner.nextLine();
+			System.out.println(); // newline
 		
 		}
 		
@@ -107,9 +108,9 @@ public class App {
 		int normal = 2;
 		int hard = 3;
 		handicap = askForAndGetNextInt("Choose the difficulty of your game: 1) Easy, 2) Normal, 3 Hard: ", 1, 3);
-		if(handicap == easy) handicap = 10;
+		if(handicap == easy) handicap = 5;
 		else if (handicap == normal) handicap = 0;
-		else if (handicap == hard) handicap = -10;
+		else if (handicap == hard) handicap = -5;
 
 		// create player using user input
 		player = new Player(name, weapon, handicap);
