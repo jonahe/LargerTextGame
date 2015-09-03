@@ -8,6 +8,9 @@ import domain.EnemyBaseClass;
 import domain.EnemyBird;
 import domain.EnemyTroll;
 import domain.EnemyWizard;
+import domain.Player;
+import domain.PowerUp;
+import domain.PowerUp_MoreDamageOrMoreHealth;
 
 /*
  * A 6 * 6 map with a 2 * 2 occupied square (forest) in the middle
@@ -16,12 +19,14 @@ import domain.EnemyWizard;
 
 public class GameMapLevel01 extends GameMap {
 
-	public GameMapLevel01() {
-		super(	"Level 1 - 'Something green in the middle'", 
+	public GameMapLevel01(Player player) {
+		super(	player,
+				"Level 1 - 'Something green in the middle'", 
 				6, 
 				6, 
 				createOccupiedAreaList(),
-				createEnemyList()
+				createEnemyList(),
+				createPowerUpList(player)
 				);
 		
 		
@@ -78,6 +83,19 @@ public class GameMapLevel01 extends GameMap {
 		
 		return enemyList;
 		
+	}
+	
+	private static List<PowerUp> createPowerUpList(Player player){
+		List<PowerUp> list = new ArrayList<>();
+		
+		// make x copies of this
+		int numberWanted = 10;
+		for(int i = 0; i < numberWanted; i++){
+			PowerUp powerUp = new PowerUp_MoreDamageOrMoreHealth(player);
+			list.add(powerUp);
+		}
+		
+		return list;
 	}
 
 }

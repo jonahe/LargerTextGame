@@ -1,11 +1,13 @@
 package maps;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import domain.EnemyBaseClass;
+import domain.MovableObject;
+import domain.Player;
+import domain.PowerUp;
 
 /*
  * Basic functionality that all maps should have
@@ -22,21 +24,44 @@ public abstract class GameMap {
 	private int MAX_X_POSITION;
 	private int MAX_Y_POSITION;
 	// map "inhabitants"
+	private Player player;
 	private List<OccupiedArea> occupiedAreaList; // for forests/buildings etc
 	private List<EnemyBaseClass> enemyList;
+	private List<PowerUp> powerUps;
+	private List<Point> takenPositions; // for power-ups and Enemies
 	//TODO: add list with "equipment" / power-ups. Maybe weapons -> meny (switch weapon. leaves old weapon). Need "medicine" to heal player
 	
 	
-	GameMap(String name, int mapDimensionX, int mapDimensionY, List<OccupiedArea> occupiedAreaList, List<EnemyBaseClass> enemyList){
+	GameMap(	Player player, 
+				String name, 
+				int mapDimensionX, 
+				int mapDimensionY, 
+				List<OccupiedArea> occupiedAreaList, 
+				List<EnemyBaseClass> enemyList, 
+				List<PowerUp> powerUps){
+		this.player = player;
 		this.name = name;
 		MAX_X_POSITION = mapDimensionX;
 		MAX_Y_POSITION = mapDimensionY;
 		this.occupiedAreaList = occupiedAreaList;
 		this.enemyList = enemyList;
+		this.powerUps = powerUps;
 		
 		// change the positions of enemies. originally all (0,0)
-		setUniqueRandomEnemyPositions();
+		setUniqueRandomPositions(getEnemyList());
+		// change the positions of powerups . originally all (0,0)
+		setUniqueRandomPositions(getPowerUps());
 		
+	}
+
+
+	public List<PowerUp> getPowerUps() {
+		return powerUps;
+	}
+
+
+	public void setPowerUps(List<PowerUp> powerUps) {
+		this.powerUps = powerUps;
 	}
 
 
@@ -82,22 +107,19 @@ public abstract class GameMap {
 	}
 	
 	
-	
-	
-	public void setUniqueRandomEnemyPositions(){
-	
-		ArrayList<Point> positionsAlreadyTaken = new ArrayList<Point>();
+	// TODO: make more general, so that it works for power-ups too.
+	public void setUniqueRandomPositions(List<? extends MovableObject> objectsToPlace ){
 		
 		// for each enemy, generate a random position. if it's OK, make that point the enemy position ELSE: try again
-		for(EnemyBaseClass enemy : enemyList){
+		for(MovableObject object : objectsToPlace){
 			while(true){
 				Point position = getRandomOccupiableMapPoint();
 				// if point HASN'T already been taken: set it as enemy position
 				// add it to the list with taken positions
 				// and continue to next enemy in the for-loop
-				if(!positionsAlreadyTaken.contains(position)){ 
-					enemy.setPosition(position);
-					positionsAlreadyTaken.add(position);
+				if(!takenPositions.contains(position)){ 
+					object.setPosition(position);
+					takenPositions.add(position);
 					break; // break the while-loop and continue with next enemy
 				}
 			}
@@ -142,7 +164,7 @@ public abstract class GameMap {
 	}
 	
 	
-	// eg. for generating a safe starting point for player, and outside enterable areas like forrests
+	// eg. for generating a safe starting point for player, and outside enterable areas like forests
 	public Point getRandomNonOccupiedPoint(){
 		while(true){
 			Point randPoint = getRandomMapPoint();

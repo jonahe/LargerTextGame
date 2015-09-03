@@ -33,12 +33,8 @@ public class App {
 	
 	private static final String QUIT_REQUEST = "q";
 	
-	// maps to choose from  --  add new levels here
-	private static List<GameMap> mapList = 
-			new ArrayList<GameMap>(Arrays.asList(	new GameMapLevel01(),
-													new GameMapLevel02(), 
-													new GameMapLevel03()
-													));
+	// maps to choose from  
+	private static List<GameMap> mapList;
 	private static GameMap currentMap;
 	
 	public static void main(String[] args) {
@@ -119,6 +115,12 @@ public class App {
 	
 	
 	private static void chooseMap(){
+		
+		// create maplist
+		//TODO: NULLPOINTER EXCEPTION. SOLVE!
+		List<GameMap> mapList = createMapList(player);
+		
+		
 		// dynamically create the options message
 		String mapOptions = "Choose a level to play:\n";
 		int count = 1;
@@ -137,7 +139,19 @@ public class App {
 	}
 	
 	
-	
+	/**
+	 * 
+	 * @param player Player that's going to play map
+	 * @return List with maps
+	 */
+	private static List<GameMap> createMapList(Player player) {
+		return new ArrayList<GameMap>(Arrays.asList(	new GameMapLevel01(player),
+														new GameMapLevel02(player), 
+														new GameMapLevel03(player)
+				));
+	}
+
+
 	private static void gameLoop() {
 		while(true){
 			// move around in world and discover things.. 

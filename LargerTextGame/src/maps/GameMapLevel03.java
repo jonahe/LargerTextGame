@@ -2,13 +2,15 @@ package maps;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import domain.EnemyBaseClass;
 import domain.EnemyBird;
 import domain.EnemyTroll;
 import domain.EnemyWizard;
+import domain.Player;
+import domain.PowerUp;
+import domain.PowerUp_MoreDamageOrMoreHealth;
 
 /*
  * A 12 * 12 map with a big (3 * 9) rectangle forest near the middle.
@@ -17,12 +19,14 @@ import domain.EnemyWizard;
 
 public class GameMapLevel03 extends GameMap {
 
-	public GameMapLevel03() {
-		super(	"Level 3 - 'Something green near the middle'", 
+	public GameMapLevel03(Player player) {
+		super(	player,
+				"Level 3 - 'Something green near the middle'", 
 				12, 
 				12, 
 				createOccupiedAreaList(),
-				createEnemyList()
+				createEnemyList(),
+				createPowerUpList(player)
 				);
 	}
 
@@ -76,6 +80,19 @@ public class GameMapLevel03 extends GameMap {
 		}
 		
 		return enemyList;
+	}
+	
+	private static List<PowerUp> createPowerUpList(Player player){
+		List<PowerUp> list = new ArrayList<>();
+		
+		// make x copies of this
+		int numberWanted = 10;
+		for(int i = 0; i < numberWanted; i++){
+			PowerUp powerUp = new PowerUp_MoreDamageOrMoreHealth(player);
+			list.add(powerUp);
+		}
+		
+		return list;
 	}
 	
 	

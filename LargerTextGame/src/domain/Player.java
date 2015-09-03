@@ -29,6 +29,13 @@ public class Player extends GameAgent implements Damageable {
 		this.handicap = handicap;
 
 	}
+	
+	public int getHandicap(){
+		return handicap;
+	}
+	public void setHandicap(int newHandicap){
+		this.handicap = newHandicap;
+	}
 		
 	// need special implementation because of potential player handicap
 	@Override

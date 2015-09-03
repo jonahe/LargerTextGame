@@ -9,6 +9,9 @@ import domain.EnemyBaseClass;
 import domain.EnemyBird;
 import domain.EnemyTroll;
 import domain.EnemyWizard;
+import domain.Player;
+import domain.PowerUp;
+import domain.PowerUp_MoreDamageOrMoreHealth;
 
 /*
  * A 10 * 10 map with a 5 * 5 occupied square (forest) in top right corner
@@ -17,12 +20,14 @@ import domain.EnemyWizard;
 
 public class GameMapLevel02 extends GameMap {
 
-	public GameMapLevel02() {
-		super(	"Level 2 - 'Something green in the corner'", 
+	public GameMapLevel02(Player player) {
+		super(	player,
+				"Level 2 - 'Something green in the corner'", 
 				10, 
 				10, 
 				createOccupiedAreaList(),
-				createEnemyList()
+				createEnemyList(),
+				createPowerUpList(player)
 				);
 		
 		
@@ -79,6 +84,19 @@ public class GameMapLevel02 extends GameMap {
 		
 		return enemyList;
 		
+	}
+	
+	private static List<PowerUp> createPowerUpList(Player player){
+		List<PowerUp> list = new ArrayList<>();
+		
+		// make x copies of this
+		int numberWanted = 7;
+		for(int i = 0; i < numberWanted; i++){
+			PowerUp powerUp = new PowerUp_MoreDamageOrMoreHealth(player);
+			list.add(powerUp);
+		}
+		
+		return list;
 	}
 
 }
