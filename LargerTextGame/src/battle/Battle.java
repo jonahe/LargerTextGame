@@ -3,6 +3,7 @@ package battle;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.App;
 import domain.EnemyBaseClass;
 import domain.Player;
 import helper.GameHelperClass;
@@ -47,6 +48,7 @@ public class Battle {
 			if(enemy.isAlive()){
 				enemy.showAppearanceMessage();
 			}
+			// the fight
 			while(enemy.isAlive()){
 				showBattleHealthStatus();
 				int response = askForAndGetNextInt("What do you want to do? 1) Attack, 2) Panic, run away! (Random direction)", 1, 2);
@@ -55,8 +57,9 @@ public class Battle {
 					// if enemy still alive, let enemy attack
 					if(enemy.isAlive()){
 						enemy.useWeapon(player);
+						
 						// if player is low on health, but alive - provide option to heal, or quit
-						if(player.getHealth() < 23 && player.isAlive()){
+						if(player.getHealth() < 13 && player.isAlive()){
 							showBattleHealthStatus();
 							System.out.println("WARNING: You are dangerously low on health.");
 							int answer  = askForAndGetNextInt("What do you want to do? 1) Drink healing potion (adds 25 hp), 2) Gamble!", 1, 2);
@@ -74,8 +77,14 @@ public class Battle {
 					}
 					
 				} else if(response == RUN_AWAY) {
-					//TODO: move weapon using ability to a class where both player and enemy can inherit.
-					int direction = GameHelperClass.generateRandomNumberWithinSpan(1, 4);
+					int direction = 0;
+					// Guarantee that the random move doesn't move us off the map, or similar non-allowed direction
+					while(true){
+						direction = GameHelperClass.generateRandomNumberWithinSpan(1, 4);
+						if(App.isValidMove(direction)){
+							break;
+						} // else continue loop until move is OK
+					}
 					player.move(direction);
 					System.out.println("Phew.. That was close! Hope we're not being followed here.");
 					break;
@@ -99,9 +108,6 @@ public class Battle {
 		
 	}
 	
-	private void updateEnemyOrEnemiesString(){
-		enemyOrEnemies = enemyList.size() > 1 ? "enemies" : "enemy";
-	}
 	
 	public List<EnemyBaseClass> getKilledEnemies(){
 		return killedEnemies;

@@ -11,7 +11,7 @@ public class PowerUp_MoreDamageOrMoreHealth extends PowerUp {
 	
 
 	public PowerUp_MoreDamageOrMoreHealth(	Player receiver) {
-		super(	"You found a PowerUp! You can choose to 1) Add 5 damage points to your weapon, 2) Add 30 health points to player", 
+		super(	"You found a PowerUp! You can choose to 1) Add 10 damage points to your weapon, 2) Add 30 health points to player", 
 				1, 
 				2, 
 				receiver);
@@ -23,7 +23,7 @@ public class PowerUp_MoreDamageOrMoreHealth extends PowerUp {
 	@Override
 	public void runChoiceLogic(int choice, Player receiver) {
 		if(choice == 1){
-			int newHandicap = receiver.getHandicap() + 5;
+			int newHandicap = receiver.getHandicap() + 10;
 			receiver.setHandicap(newHandicap);
 		} else {
 			// choice 2

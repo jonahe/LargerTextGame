@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import battle.Battle;
 import domain.EnemyBaseClass;
 import domain.Player;
+import domain.PowerUp;
 import domain.Weapon;
 import maps.GameMap;
 import maps.GameMapLevel01;
@@ -132,6 +133,7 @@ public class App {
 		// adjust to 0 index
 		chosenMapIndex--;
 		currentMap = mapList.get(chosenMapIndex);
+		
 		
 		// set initial position for player in map
 		player.setPosition(currentMap.getRandomNonOccupiedPoint());
@@ -259,7 +261,7 @@ public class App {
 	 * @return boolean. true if move was ok. else false
 	 */
 	
-	private static boolean isValidMove(int direction){
+	public static boolean isValidMove(int direction){
 		
 		
 		boolean valid = true;
@@ -351,6 +353,24 @@ public class App {
 				oArea.setExitedLastRound(false); 
 			}
 		}
+		
+		
+		// powerup event
+		// check list of powerUps, if any of them is on the position the player is on.
+		PowerUp foundPowerUp = null;
+		for(PowerUp powerUp : currentMap.getPowerUps()){
+			if(powerUp.getPosition().equals(player.getPosition())){
+				foundPowerUp = powerUp;
+			}
+		}
+		// had to do it outside of the loop, because ArrayList doesn't allow you to remove item from list while looping through it
+		if(foundPowerUp != null){
+			foundPowerUp.startPowerUp();
+			// after, remove from map
+			currentMap.getPowerUps().remove(foundPowerUp);
+			System.out.printf("Only %d powerUp(s) left..\n", currentMap.getPowerUps().size());
+		}
+		
 		
 		// enemy events
 		ArrayList<EnemyBaseClass> enemiesToFight = new ArrayList<EnemyBaseClass>();

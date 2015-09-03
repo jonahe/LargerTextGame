@@ -89,7 +89,7 @@ public class GameMapLevel01 extends GameMap {
 		List<PowerUp> list = new ArrayList<>();
 		
 		// make x copies of this
-		int numberWanted = 10;
+		int numberWanted = 9;
 		for(int i = 0; i < numberWanted; i++){
 			PowerUp powerUp = new PowerUp_MoreDamageOrMoreHealth(player);
 			list.add(powerUp);

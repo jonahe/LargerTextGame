@@ -1,6 +1,7 @@
 package maps;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -28,7 +29,7 @@ public abstract class GameMap {
 	private List<OccupiedArea> occupiedAreaList; // for forests/buildings etc
 	private List<EnemyBaseClass> enemyList;
 	private List<PowerUp> powerUps;
-	private List<Point> takenPositions; // for power-ups and Enemies
+	private List<Point> takenPositions = new ArrayList<Point>();// for power-ups and Enemies
 	//TODO: add list with "equipment" / power-ups. Maybe weapons -> meny (switch weapon. leaves old weapon). Need "medicine" to heal player
 	
 	

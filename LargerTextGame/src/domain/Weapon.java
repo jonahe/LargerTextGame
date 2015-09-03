@@ -5,7 +5,7 @@ public enum Weapon {
 	GUN (1, 17, "Bangbang!"),
 	MELEE (2, 17, "StabbStabb!"),
 	MAGIC (3, 17, "Abrahcadabrahh!"),
-	WEIRDNESS (17, 5, "How can mirrors be real if eyes aren't real!?");
+	WEIRDNESS (4, 17, "How can mirrors be real if eyes aren't real!?");
 	
 	private int id;
 	private int damage;
