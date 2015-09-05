@@ -10,22 +10,20 @@ public abstract class PowerUp extends MovableObject {
 	private String optionsMessage;
 	private int optionsLowerBound;
 	private int optionsHigherBound;
-	private Player receiver;
 
 	public PowerUp(	String optionsMessage, 
 					int optionsLowerBound, 
-					int optionsHigherBound, 
-					Player receiver) { 
+					int optionsHigherBound
+					) { 
 		super(new Point(0,0), 1); // has no speed, but if move() is going to work, we need to have at least 1
 		this.optionsMessage = optionsMessage;
 		this.optionsLowerBound = optionsLowerBound;
 		this.optionsHigherBound = optionsHigherBound;
-		this.receiver = receiver;
 		
 		
 	}
 	
-	public void startPowerUp(){
+	public void startPowerUp(Player receiver){
 		int choice = showOptionsMessageAndGetChoice();
 		runChoiceLogic(choice, receiver);
 		
@@ -36,7 +34,7 @@ public abstract class PowerUp extends MovableObject {
 		return choice;
 	}
 	
-	public abstract void runChoiceLogic(int choice, Player player);
+	public abstract void runChoiceLogic(int choice, Player receiver);
 	
 	
 

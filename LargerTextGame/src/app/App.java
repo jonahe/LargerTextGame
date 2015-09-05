@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+
 import battle.Battle;
 import domain.EnemyBaseClass;
 import domain.Player;
@@ -35,16 +36,16 @@ public class App {
 	private static final String QUIT_REQUEST = "q";
 	
 	// maps to choose from  
-	private static List<GameMap> mapList;
 	private static GameMap currentMap;
 	
 	public static void main(String[] args) {
 		
+		// setup scanner 
 		initializeGame();
 		
 		// keeps going if player died and exited the game loop, it will just start over
 		while(true){
-		
+
 			System.out.println("Welcome to the game!");
 			// setup
 			setupPlayer();
@@ -73,19 +74,17 @@ public class App {
 			
 	
 	private static void setupPlayer() {
-		System.out.print("Please enter your name: ");
-		String name;
-		int weaponId;
+	
+		String name = askForAndGetNextString("Please enter your name", new ArrayList<String>());
 		
-		name = scanner.nextLine();
-
+		int weaponId;
 
 		// produce an option list of all the currently available weapons
 		String weaponChoiceMessage = "Choose a weapon! \n";
 		for(Weapon w : Weapon.values()){
 			weaponChoiceMessage += w.getId() + ") " + w.toString() + ", ";
 		}
-		// trim off the last comma, and add colon
+		// trim off the last comma
 		int length = weaponChoiceMessage.length();
 		weaponChoiceMessage = weaponChoiceMessage.substring(0, (length-2));
 
@@ -117,8 +116,7 @@ public class App {
 	
 	private static void chooseMap(){
 		
-		// create maplist
-		//TODO: NULLPOINTER EXCEPTION. SOLVE!
+		// create map list
 		List<GameMap> mapList = createMapList(player);
 		
 		
@@ -220,14 +218,14 @@ public class App {
 			} else {  // it can be read as a string
 				
 				// check if user wanted to quit
-				//TODO: figure out why scanner.next() work better than scanner.nextLine();
 				
 				String input = scanner.next(); // this also skips the input that wasn't an int
 				System.out.println(input);
 				if(input.equalsIgnoreCase(QUIT_REQUEST)){
-					System.out.print("Are you sure you want to quit? Y / N : ");
-					String confirmation = scanner.next();
-					if(confirmation.equalsIgnoreCase("Y")){
+
+					String confirmation = askForAndGetNextString(	"Are you sure you want to quit? Y / N", 
+																	new ArrayList<String>(Arrays.asList("Y","N")));
+					if(confirmation.equals("y")){
 						quit();
 					} else {
 						continue;
@@ -238,6 +236,50 @@ public class App {
 			}
 		}
 	}
+	
+	// similar to askForAndGetNextInt() but for Strings 
+
+	/**
+	 * Ask user for a String, repeat until the user input fits one of the valid choices, then return answer
+	 * @param askMessage Message to show user. eg "Do you want to quit? y/n
+	 * @param validOptions List of allowed answers (case insensitive), or empty list if any answer is ok.
+	 * @return The valid answer in lowercase, unless validOptions is empty: then the string is returned unchanged
+	 */
+	public static String askForAndGetNextString(String askMessage, List<String> validOptions){
+		
+		String answer;
+		// ask
+		System.out.print(askMessage + ": ");
+		// no options, like if any answer is OK, eg. when asked to provide a player name.
+		if(validOptions.isEmpty()){
+			return scanner.nextLine();
+		}
+		
+		// make all options lowercase
+		// NOTE: Strings are immutable, so we can't change them, we must replace them. But we can't do that while the list is looping..
+		ArrayList<String> lowerCaseOptions = new ArrayList<String>();
+		for(String option : validOptions){
+			lowerCaseOptions.add(option.toLowerCase());
+		}
+		
+		// run until input is ok
+		while(true){
+			// get and clean the input
+			answer = scanner.next().trim().toLowerCase();
+			// check if input is valid
+			if(lowerCaseOptions.contains(answer)){
+				break;
+			} // else ask again and repeat loop
+			// yell on user
+			System.out.println("Try again..");
+			// ask
+			System.out.print(askMessage + ": ");
+		}
+		
+		return answer;
+	}
+	
+	
 		
 	// this is really more of the "game loop" 
 	private static void exploreWorld(){
@@ -365,7 +407,7 @@ public class App {
 		}
 		// had to do it outside of the loop, because ArrayList doesn't allow you to remove item from list while looping through it
 		if(foundPowerUp != null){
-			foundPowerUp.startPowerUp();
+			foundPowerUp.startPowerUp(player);
 			// after, remove from map
 			currentMap.getPowerUps().remove(foundPowerUp);
 			System.out.printf("Only %d powerUp(s) left..\n", currentMap.getPowerUps().size());
