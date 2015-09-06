@@ -13,7 +13,7 @@ public class ForrestBasic extends OccupiedArea implements IEnterable, IExitable 
 	private String messageOnExit;
 
 	/**
-	 * Constructor for Forrest
+	 * Constructor for Forest
 	 * 
 	 * @param name Name of forest. Not currently used.
 	 * @param messageOnNear Message to show if player is near.
@@ -45,8 +45,10 @@ public class ForrestBasic extends OccupiedArea implements IEnterable, IExitable 
 		int maxY = minY + height;
 		
 		ArrayList<Point> occupiedPoints = new ArrayList<Point>();
-		for(int xPos = minX; xPos <= maxX; xPos++){
-			for(int yPos = minY; yPos <= maxY; yPos++){
+		// if starting point was 0.0 we'd want a 2*2 forest to occupy 0.0, 0.1, 1.0, 1.1 
+		// so we use <  instead of <= , or else 2*2 would become like a 3*3 forest
+		for(int xPos = minX; xPos < maxX; xPos++){
+			for(int yPos = minY; yPos < maxY; yPos++){
 				occupiedPoints.add(new Point(xPos, yPos));
 			}
 		}

@@ -289,8 +289,12 @@ public class App {
 		// if move is valid, move player
 		if(isValidMove(direction)){
 			movePlayer(direction);
+			printPlayerPositionOnMap();
 			triggerEvents(player.getPosition());
 
+		} else { // move not valid
+			printPlayerPositionOnMap();
+			printEndOfMapMessage(direction);
 		}
 
 
@@ -300,38 +304,45 @@ public class App {
 	 * Check if player tried to move outside of map
 	 * 
 	 * @param direction Direction that player wants to go in
-	 * @return boolean. true if move was ok. else false
+	 * @return boolean. true if move was OK. else false
 	 */
 	
 	public static boolean isValidMove(int direction){
 		
-		
 		boolean valid = true;
-		String endOfMapMessage = "What's this? A massive wall? I guess we can't go any further ";
 		
 		if(direction == NORTH){
-			
 			if(player.getPosition().y == currentMap.getMIN_Y_POSITION()){
-				System.out.println(endOfMapMessage + "north.");
 				valid = false;
 			}
 		} else if(direction == SOUTH){
 			if(player.getPosition().y == currentMap.getMAX_Y_POSITION()){
-				System.out.println(endOfMapMessage + "south.");
 				valid = false;
 			}
 		} else if(direction == WEST){
 			if(player.getPosition().x == currentMap.getMIN_X_POSITION()){
-				System.out.println(endOfMapMessage + "west.");
 				valid = false;
 			}
 		} else if(direction == EAST){
 			if(player.getPosition().x == currentMap.getMAX_X_POSITION()){
-				System.out.println(endOfMapMessage + "east.");
 				valid = false;
 			}
 		}
 		return valid;
+	}
+	
+	public static void printEndOfMapMessage(int direction){
+		
+		String endOfMapMessage = "What's this? A massive wall? I guess we can't go any further ";
+		if(direction == NORTH){
+			System.out.println(endOfMapMessage + "north.");
+		} else if(direction == SOUTH){
+			System.out.println(endOfMapMessage + "south.");
+		} else if(direction == WEST){
+			System.out.println(endOfMapMessage + "west.");
+		} else if(direction == EAST){
+			System.out.println(endOfMapMessage + "east.");
+		}
 	}
 	
 	
@@ -351,6 +362,7 @@ public class App {
 		} else if(direction == EAST){
 			System.out.println("You walked east." + " - " + getPlayerPositionDescription());
 		}
+		
 	}
 	
 	/**
@@ -449,9 +461,12 @@ public class App {
 	}
 	
 	private static String getPlayerPositionDescription(){
+		// the 0,0 point being in the upper left corner might be confusing
+		// so we "flip" the y-axis so that 0,0 seems to be at lower left corner instead
+		int flippedY = (currentMap.getMAX_Y_POSITION() - player.getPosition().y);
 		return String.format(	"You are now at position (%d,%d)", 
 								player.getPosition().x,
-								player.getPosition().y
+								flippedY
 								);
 	}
 	
@@ -463,6 +478,67 @@ public class App {
 		// quit
 		System.out.println("Bye bye!");
 		System.exit(0);
+	}
+	
+	
+	private static void printPlayerPositionOnMap(){
+		String occcupied = "|x"; // how a point occupied by player should look like
+		String empty = "|_"; //  how an empty point should look like
+		String endRow = "|\n"; // to add after last x value in each row
+		String map = "";
+		int playerPosY = player.getPosition().y;
+		int playerPosX = player.getPosition().x;
+		
+		int maxY = currentMap.getMAX_Y_POSITION();
+		int maxX = currentMap.getMAX_X_POSITION();
+		
+		StringBuilder sb = new StringBuilder();
+		// make "ceiling" _ _ _ 
+		for(int i = 0; i <= maxX; i++){
+			// not the last one
+			if(i != (maxX)){
+				sb.append(" _");
+			} else {
+				System.out.println("last one");
+				sb.append(" _ ");
+			}
+		}
+		sb.append("\n");
+		String ceiling = sb.toString();
+		
+		// clear for next job, start with ceiling.
+		sb = new StringBuilder(ceiling);
+		
+		// make map
+		//TODO: figure out why map is represented in the "right" direction, even if the player position should
+		// move as if 0.0 is in the upper left corner, not in the lower left
+		for(int y = 0; y <= maxY; y++){
+			
+			xLoop:
+			for(int x = 0; x <= maxX; x++){
+				// if this x OR y position is NOT occupied by player, then it's empty
+				if(!(y == playerPosY) || !(x == playerPosX)){
+					sb.append(empty);
+					// if last x value in a row -> add newLine
+					if(x == maxX){
+						sb.append(endRow);
+						break xLoop;
+					}
+				}
+				// if x and y is the same as player position, the position is occupied
+				if(y == playerPosY && x == playerPosX){
+					sb.append(occcupied);
+					// if last x value in a row -> add newLine
+					if(x == maxX){
+						sb.append(endRow);
+						break xLoop;
+					}
+				}
+			}
+		}
+		
+		map = sb.toString();
+		System.out.println("\n" + map);
 	}
 	
 

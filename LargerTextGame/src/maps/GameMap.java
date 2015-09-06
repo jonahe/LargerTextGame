@@ -32,6 +32,16 @@ public abstract class GameMap {
 	private List<Point> takenPositions = new ArrayList<Point>();// for power-ups and Enemies
 	//TODO: add list with "equipment" / power-ups. Maybe weapons -> meny (switch weapon. leaves old weapon). Need "medicine" to heal player
 	
+	/**
+	 * Constructor for GameMap
+	 * @param player 
+	 * @param name
+	 * @param mapDimensionX eg. for a 4 * 10 map, x would be 4-1 (because 0 is a position to)
+	 * @param mapDimensionY eg. for a 4 * 10 map, y would be 10-1 (because 0 is a position to)
+	 * @param occupiedAreaList
+	 * @param enemyList
+	 * @param powerUps
+	 */
 	
 	GameMap(	Player player, 
 				String name, 
@@ -182,8 +192,8 @@ public abstract class GameMap {
 	}
 	
 	@Override
-	public String toString(){
-		return String.format("GameMap [name: %s, dimensions: %d * %d]", getName(), getMAX_X_POSITION(), getMAX_Y_POSITION());
+	public String toString(){ // plus 1 on the x and y because a 5 * 5 map would have 4.4 as the end position
+		return String.format("GameMap [name: %s, dimensions: %d * %d]", getName(), getMAX_X_POSITION() +1, getMAX_Y_POSITION() +1);
 	}
 	
 
