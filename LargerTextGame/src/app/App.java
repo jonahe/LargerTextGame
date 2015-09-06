@@ -499,7 +499,6 @@ public class App {
 			if(i != (maxX)){
 				sb.append(" _");
 			} else {
-				System.out.println("last one");
 				sb.append(" _ ");
 			}
 		}
@@ -510,8 +509,11 @@ public class App {
 		sb = new StringBuilder(ceiling);
 		
 		// make map
-		//TODO: figure out why map is represented in the "right" direction, even if the player position should
-		// move as if 0.0 is in the upper left corner, not in the lower left
+		// For example: in a 7*7 map from 0.0 to 6.6, if the player has position 0.0, that would be the upper left corner. And since
+		// we start from y = 0 and x = 0, that point will also be be added to the map String first.
+		// Remember that the position shown in the text game has the Y axis flipped, so 
+	
+		// loop through y positions
 		for(int y = 0; y <= maxY; y++){
 			
 			xLoop:
