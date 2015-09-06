@@ -482,7 +482,9 @@ public class App {
 	
 	
 	private static void printPlayerPositionOnMap(){
-		String occcupied = "|x"; // how a point occupied by player should look like
+		String firstLetterOfName = "";
+		firstLetterOfName += player.getName().toUpperCase().charAt(0);
+		String occcupied = "|" +firstLetterOfName; // how a point occupied by player should look like
 		String empty = "|_"; //  how an empty point should look like
 		String endRow = "|\n"; // to add after last x value in each row
 		String map = "";
