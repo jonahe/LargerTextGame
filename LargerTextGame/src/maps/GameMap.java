@@ -217,7 +217,7 @@ public abstract class GameMap {
 	
 	@Override
 	public String toString(){ // plus 1 on the x and y because a 5 * 5 map would have 4.4 as the end position
-		return String.format("GameMap [name: %s, dimensions: %d * %d]", getName(), getMAX_X_POSITION() +1, getMAX_Y_POSITION() +1);
+		return String.format("GameMap [%s, size: %d * %d]", getName(), getMAX_X_POSITION() +1, getMAX_Y_POSITION() +1);
 	}
 	
 

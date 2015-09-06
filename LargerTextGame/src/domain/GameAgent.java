@@ -81,5 +81,9 @@ public class GameAgent extends MovableObject implements Damageable {
 	public boolean isAlive() {
 		return alive;
 	}
+	
+	public void setAlive(boolean isAlive){
+		alive = isAlive;
+	}
 
 }

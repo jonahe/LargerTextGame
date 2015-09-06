@@ -2,7 +2,6 @@ package app;
 
 
 import java.awt.Point;
-import java.nio.channels.ShutdownChannelGroupException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,14 +46,32 @@ public class App {
 		// setup scanner 
 		initializeGame();
 		
+		boolean playedBefore = false;
 		// keeps going if player died and exited the game loop, it will just start over
 		while(true){
 
 			System.out.println("Welcome to the game!");
 			// setup
-			//TODO: add a check here. if it's not the first time, maybe player wants to keep
-			// player with the same "account".
-			setupPlayer();
+			
+			if(playedBefore){
+				List<String> validOptions = Arrays.asList("y","n");
+				String message = String.format("Do you want to keep playing as %s? y/n ", player.getName());
+				String answer = askForAndGetNextString(message, validOptions);
+				if(answer.equals("n")){
+					// try to remove any lingering input that might interfere with the setting up of the player
+					scanner.nextLine();
+					setupPlayer();
+				} else {
+					// else skip directly to choose map
+					// unless player is dead, then they must get some health first
+					if(!player.isAlive()){
+						player.setAlive(true);
+						player.setHealth(100);
+					}
+				}
+			} else {
+				setupPlayer();
+			}
 
 			chooseMap();
 
@@ -67,7 +84,7 @@ public class App {
 
 			// start game loop
 			gameLoop();
-			
+			playedBefore = true;
 			// try to remove any lingering input that might interfere with the setting up of the player
 			scanner.nextLine();
 			System.out.println(); // newline

@@ -11,10 +11,9 @@ public class PowerUp_MoreDamageOrMoreHealth extends PowerUp {
 	
 
 	public PowerUp_MoreDamageOrMoreHealth(	Player receiver) {
-		super(	"You found a PowerUp! You can choose to 1) Add 10 damage points to your weapon, 2) Add 30 health points to player", 
+		super(	"You found a PowerUp! \nYou can choose to add 1) 10 damage to weapon, 2)  30 health points to player", 
 				1, 
 				2);
-		// TODO Auto-generated constructor stub
 	}
 
 
