@@ -95,6 +95,10 @@ public abstract class GameMap {
 		return MAX_Y_POSITION;
 	}
 	
+	public Player getPlayer(){
+		return player;
+	}
+	
 	public List<OccupiedArea> getOccupiedAreaList(){
 		return occupiedAreaList;
 	}
@@ -103,7 +107,11 @@ public abstract class GameMap {
 		return enemyList;
 	}
 	
-	
+	/**
+	 * Is this map position inside an OccupiedArea, like a forest 
+	 * @param positionToCheck
+	 * @return
+	 */
 	public boolean mapPositionOccupied(Point positionToCheck){
 		
 		boolean occupied = false;
@@ -118,7 +126,10 @@ public abstract class GameMap {
 	}
 	
 	
-	// TODO: make more general, so that it works for power-ups too.
+	/**
+	 * 
+	 * @param objectsToPlace Like Enemy, PowerUp or other object that inherits from MovableObject
+	 */
 	public void setUniqueRandomPositions(List<? extends MovableObject> objectsToPlace ){
 		
 		// for each enemy, generate a random position. if it's OK, make that point the enemy position ELSE: try again
@@ -185,6 +196,19 @@ public abstract class GameMap {
 			return randPoint;
 		}
 
+	}
+	
+	public List<Point> getTakenPositions(){
+		return takenPositions;
+	}
+	
+	/**
+	 * Check if a point is in the takenPositions list. (Containing enemies, powerUps and other MovableObject, excluding Player and Areas like forests)
+	 * @param point point to check
+	 * @return boolean taken or not
+	 */
+	public boolean pointTaken(Point point){
+		return takenPositions.contains(point);
 	}
 	
 	public String getName(){

@@ -2,12 +2,12 @@ package app;
 
 
 import java.awt.Point;
+import java.nio.channels.ShutdownChannelGroupException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-
 
 import battle.Battle;
 import domain.EnemyBaseClass;
@@ -20,6 +20,7 @@ import maps.GameMapLevel02;
 import maps.GameMapLevel03;
 import maps.IEnterable;
 import maps.IExitable;
+import maps.MapPrinter;
 import maps.OccupiedArea;
 
 public class App {
@@ -37,6 +38,9 @@ public class App {
 	
 	// maps to choose from  
 	private static GameMap currentMap;
+	// graphical options
+	private static boolean showPowerUp;
+	private static boolean showEnemy;
 	
 	public static void main(String[] args) {
 		
@@ -48,6 +52,8 @@ public class App {
 
 			System.out.println("Welcome to the game!");
 			// setup
+			//TODO: add a check here. if it's not the first time, maybe player wants to keep
+			// player with the same "account".
 			setupPlayer();
 
 			chooseMap();
@@ -132,6 +138,21 @@ public class App {
 		chosenMapIndex--;
 		currentMap = mapList.get(chosenMapIndex);
 		
+		// configure graphical options
+		System.out.println("You will see your own position on the map when you play but ");
+		List<String> validOptions = Arrays.asList("y","n");
+		String answer = askForAndGetNextString("would you like to see PowerUp positions too? y/n", validOptions);
+		if(answer.equals("y")){
+			showPowerUp = true;
+		} else {
+			showPowerUp = false;
+		}
+		answer = askForAndGetNextString("How about enemy positions? Show? y/n", validOptions);
+		if(answer.equals("y")){
+			showEnemy = true;
+		} else {
+			showEnemy = false;
+		}
 		
 		// set initial position for player in map
 		player.setPosition(currentMap.getRandomNonOccupiedPoint());
@@ -284,16 +305,17 @@ public class App {
 	// this is really more of the "game loop" 
 	private static void exploreWorld(){
 
+		//TODO: change to WASD controls , but convert to int later, to keep old methods?
 		int direction = askForAndGetNextInt("Which direction do you want to go?\n1) North, 2) South, 3) West, 4) East", 1, 4);
 
 		// if move is valid, move player
 		if(isValidMove(direction)){
 			movePlayer(direction);
-			printPlayerPositionOnMap();
+			printMap();
 			triggerEvents(player.getPosition());
 
 		} else { // move not valid
-			printPlayerPositionOnMap();
+			printMap();
 			printEndOfMapMessage(direction);
 		}
 
@@ -448,6 +470,7 @@ public class App {
 			// and give report on progress - if one or more enemies were killed
 			if(killedEnemies.size() >= 1){
 				System.out.println("Good job! Only " + currentMap.getEnemyList().size() + " enemies left." );
+				printMap();
 			}
 			
 			// it's possible the player got killed.
@@ -481,68 +504,11 @@ public class App {
 	}
 	
 	
-	private static void printPlayerPositionOnMap(){
-		String firstLetterOfName = "";
-		firstLetterOfName += player.getName().toUpperCase().charAt(0);
-		String occcupied = "|" +firstLetterOfName; // how a point occupied by player should look like
-		String empty = "|_"; //  how an empty point should look like
-		String endRow = "|\n"; // to add after last x value in each row
-		String map = "";
-		int playerPosY = player.getPosition().y;
-		int playerPosX = player.getPosition().x;
+	private static void printMap(){
 		
-		int maxY = currentMap.getMAX_Y_POSITION();
-		int maxX = currentMap.getMAX_X_POSITION();
+		MapPrinter mapPrinter = new MapPrinter(currentMap, showPowerUp, showEnemy);
+		System.out.println(mapPrinter.printMap());
 		
-		StringBuilder sb = new StringBuilder();
-		// make "ceiling" _ _ _ 
-		for(int i = 0; i <= maxX; i++){
-			// not the last one
-			if(i != (maxX)){
-				sb.append(" _");
-			} else {
-				sb.append(" _ ");
-			}
-		}
-		sb.append("\n");
-		String ceiling = sb.toString();
-		
-		// clear for next job, start with ceiling.
-		sb = new StringBuilder(ceiling);
-		
-		// make map
-		// For example: in a 7*7 map from 0.0 to 6.6, if the player has position 0.0, that would be the upper left corner. And since
-		// we start from y = 0 and x = 0, that point will also be be added to the map String first.
-		// Remember that the position shown in the text game has the Y axis flipped, so 
-	
-		// loop through y positions
-		for(int y = 0; y <= maxY; y++){
-			
-			xLoop:
-			for(int x = 0; x <= maxX; x++){
-				// if this x OR y position is NOT occupied by player, then it's empty
-				if(!(y == playerPosY) || !(x == playerPosX)){
-					sb.append(empty);
-					// if last x value in a row -> add newLine
-					if(x == maxX){
-						sb.append(endRow);
-						break xLoop;
-					}
-				}
-				// if x and y is the same as player position, the position is occupied
-				if(y == playerPosY && x == playerPosX){
-					sb.append(occcupied);
-					// if last x value in a row -> add newLine
-					if(x == maxX){
-						sb.append(endRow);
-						break xLoop;
-					}
-				}
-			}
-		}
-		
-		map = sb.toString();
-		System.out.println("\n" + map);
 	}
 	
 
