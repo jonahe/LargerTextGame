@@ -34,7 +34,7 @@ public class App {
 	
 	private static final String QUIT_REQUEST = "q";
 	
-	// maps to choose from  
+	// current map 
 	private static GameMap currentMap;
 	// graphical options
 	private static boolean showPowerUp;
