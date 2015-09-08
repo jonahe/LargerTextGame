@@ -1,5 +1,5 @@
 /app/
-/domain/
-/maps/
-/helper/
 /battle/
+/domain/
+/helper/
+/maps/

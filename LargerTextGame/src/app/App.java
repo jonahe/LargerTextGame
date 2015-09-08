@@ -1,6 +1,5 @@
 package app;
 
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -525,6 +524,7 @@ public class App {
 		
 		MapPrinter mapPrinter = new MapPrinter(currentMap, showPowerUp, showEnemy);
 		System.out.println(mapPrinter.printMap());
+		
 		
 	}
 	
